@@ -13,16 +13,18 @@ public class CaptionActivity extends Activity {
 	ImageView submitBtn;
 	EditText caption;
 	String captionText;
+	ImageView uploadedImage;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_caption);
+		uploadedImage = (ImageView) findViewById(R.id.uploadedImageCaption);
+		uploadedImage.setImageBitmap(UserInfo.getUploadedImage());
 		changeBtn = (ImageView) findViewById(R.id.changeBtn);
 		submitBtn = (ImageView) findViewById(R.id.captionSubmit);
 		caption = (EditText) findViewById(R.id.caption);
 		captionText = caption.getText().toString();
 		changeBtn.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub

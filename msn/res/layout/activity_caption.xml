@@ -45,5 +45,13 @@
         android:layout_marginTop="23dp"
         android:src="@drawable/submit" />
 
+    <ImageView
+        android:id="@+id/uploadedImageCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/changeBtn"
+        android:layout_below="@+id/changeBtn"
+        android:layout_marginTop="51dp"
+        android:src="@drawable/whitebg" />
 
 </RelativeLayout>

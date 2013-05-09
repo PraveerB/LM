@@ -1,11 +1,17 @@
 package com.example.msn;
 
+import java.sql.Blob;
+
+import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,15 +20,27 @@ import android.widget.RelativeLayout;
 
 public class UploadGalleryActivity extends Activity {
 	ImageView uploadBtn;
-	//ImageView uploadedImage;
 	ImageView uploadChoices;
 	Intent cameraIntent;
 	ImageView closeBtn;
 	Bitmap bmp;
 	private ImageView selectFromGalleryBtn;
-	final static int cameraData = 0; 
+	boolean galleryData = false;
+	boolean cameraData = false;
 	RelativeLayout popupLayout;
 	
+	@SuppressLint("NewApi")
+	@Override
+	public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
+		// TODO Auto-generated method stub
+		super.startActivityForResult(intent, requestCode, options);
+		if(requestCode == RESULT_OK) {
+			//System.out.println("Inside if...");
+			//Bundle data = intent.getExtras();
+			//bmp = (Bitmap) data.get("data");
+			//uploadedImage.setImageBitmap(bmp);
+		}
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,13 +62,13 @@ public class UploadGalleryActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 			    System.out.println("AAAAAAAAAAAAAAAAAA");
+			    cameraData =true;
 			    cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			    startActivityForResult(cameraIntent, cameraData);
+			    startActivityForResult(cameraIntent, 1);
 			    //setContentView(R.layout.activity_main);
 			    
 			}
 		});
-		//uploadedImage = (ImageView) findViewById(R.id.uploadedImage);
 		closeBtn = (ImageView) findViewById(R.id.close);
 		closeBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -71,17 +89,36 @@ public class UploadGalleryActivity extends Activity {
 		});
 	}
 
-	
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		System.out.println("onActivityResult...");
 		if(resultCode == RESULT_OK){
-			Bundle extras= data.getExtras();
-			bmp = (Bitmap) extras.get("data");
-			//uploadedImage = (ImageView) findViewById(R.id.uploadedImagePreview);
-			//uploadedImage.setImageBitmap(bmp);
+			System.out.println("Inside if.."+ requestCode);
+			if( cameraData) {
+				Bundle extras= data.getExtras();
+				bmp = (Bitmap) extras.get("data");
+				UserInfo.setUploadedImage(bmp);
+			}
+			else if(galleryData) {
+				//galery processing
+				System.out.println("gallery processing");
+				
+				Uri selectedImage = data.getData();
+	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+	            Cursor cursor = getContentResolver().query(
+	                               selectedImage, filePathColumn, null, null, null);
+	            cursor.moveToFirst();
+
+	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+	            String filePath = cursor.getString(columnIndex);
+	            cursor.close();
+	            bmp = BitmapFactory.decodeFile(filePath);
+				
+				UserInfo.setUploadedImage(bmp);
+			}
 			Intent captionIntent = new Intent("com.example.msn.CAPTION");
 			startActivity(captionIntent);
 		}
@@ -98,38 +135,9 @@ public class UploadGalleryActivity extends Activity {
 		Intent intent = new Intent();
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
-		int PICK_IMAGE = 0;
-		startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE );
+		galleryData = true;
+		startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0);
+		
+		
 	}
-	
-	
-//Save in Gallery
-	/*Uri saveMediaEntry(String imagePath,String title,String description,long dateTaken,int orientation,Location loc) {
-			ContentValues v = new ContentValues();
-			String temp = "image/jpeg";
-			v.put(Images.Media.TITLE, title);
-			v.put(Images.Media.DISPLAY_NAME, displayName);
-			v.put(Images.Media.DESCRIPTION, description);
-			v.put(Images.Media.DATE_ADDED, dateTaken);
-			v.put(Images.Media.DATE_TAKEN, dateTaken);
-			v.put(Images.Media.DATE_MODIFIED, dateTaken) ;
-			v.put(Images.Media.MIME_TYPE, temp);
-			v.put(Images.Media.ORIENTATION, orientation);
-			File f = new File(imagePath) ;
-			File parent = f.getParentFile() ;
-			String path = parent.toString().toLowerCase() ;
-			String name = parent.getName().toLowerCase() ;
-			v.put(Images.ImageColumns.BUCKET_ID, path.hashCode());
-			v.put(Images.ImageColumns.BUCKET_DISPLAY_NAME, name);
-			v.put(Images.Media.SIZE,f.length()) ;
-			f = null ;
-			//Object targ_loc= ;
-			if( targ_loc != null ) {
-			v.put(Images.Media.LATITUDE, loc.getLatitude());
-			v.put(Images.Media.LONGITUDE, loc.getLongitude());
-			}
-			v.put("_data" ,imagePath) ;
-			ContentResolver c = getContentResolver() ;
-			return c.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
-	}*/
 }
