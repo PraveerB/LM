@@ -43,7 +43,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:visibility="invisible" >
+    android:visibility="visible" >
 
     <ImageView
         android:id="@+id/whitebg"
@@ -53,35 +53,40 @@
         android:src="@drawable/whitebg" />
 
     <ImageView
-        android:id="@+id/camera"
+        android:id="@+id/phonegallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/whitebg"
-        android:layout_below="@+id/facebook"
-        android:src="@drawable/cameragallery" />
+        android:layout_above="@+id/facebook"
+        android:layout_alignRight="@+id/whitebg"
+        android:layout_marginBottom="14dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/phonegallery" />
 
     <ImageView
         android:id="@+id/facebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/phonegallery"
         android:layout_centerVertical="true"
         android:src="@drawable/facebookgallery" />
 
     <ImageView
-        android:id="@+id/phonegallery"
+        android:id="@+id/camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/facebook"
-        android:layout_alignTop="@+id/whitebg"
-        android:src="@drawable/phonegallery" />
+        android:layout_alignLeft="@+id/facebook"
+        android:layout_below="@+id/facebook"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/cameragallery" />
 
     <ImageView
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/whitebg"
-        android:layout_toRightOf="@+id/whitebg"
+        android:layout_above="@+id/phonegallery"
+        android:layout_alignRight="@+id/whitebg"
         android:src="@drawable/close" />
+
 </RelativeLayout>
 
 </RelativeLayout>
