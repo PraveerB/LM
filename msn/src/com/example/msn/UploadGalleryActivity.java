@@ -1,5 +1,6 @@
 package com.example.msn;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 
 import android.net.Uri;
@@ -99,7 +100,12 @@ public class UploadGalleryActivity extends Activity {
 			if( cameraData) {
 				Bundle extras= data.getExtras();
 				bmp = (Bitmap) extras.get("data");
-				UserInfo.setUploadedImage(bmp);
+				
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+	            byte[] byteArray = stream.toByteArray();
+				
+				UserInfo.setUploadedImage(byteArray);
 			}
 			else if(galleryData) {
 				//galery processing
@@ -107,17 +113,18 @@ public class UploadGalleryActivity extends Activity {
 				
 				Uri selectedImage = data.getData();
 	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-	            Cursor cursor = getContentResolver().query(
-	                               selectedImage, filePathColumn, null, null, null);
+	            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
 	            cursor.moveToFirst();
-
 	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 	            String filePath = cursor.getString(columnIndex);
 	            cursor.close();
 	            bmp = BitmapFactory.decodeFile(filePath);
-				
-				UserInfo.setUploadedImage(bmp);
+	            
+	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+	            byte[] byteArray = stream.toByteArray();
+	            
+				UserInfo.setUploadedImage(byteArray);
 			}
 			Intent captionIntent = new Intent("com.example.msn.CAPTION");
 			startActivity(captionIntent);

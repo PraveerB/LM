@@ -9,49 +9,44 @@
     android:background="@drawable/screen_8_base"
     tools:context=".CaptionActivity" >
 
-   
-    <ImageView
-        android:id="@+id/changeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/uploadedImagePreview"
-        android:layout_marginRight="17dp"
-        android:layout_marginTop="75dp"
-        android:src="@drawable/change" />
-
     <ImageView
         android:id="@+id/uploadedImagePreview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/captionSubmit"/>
-    
-     <EditText
-        android:id="@+id/caption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="77dp"
-        android:layout_marginLeft="35dp"
-        android:ems="10" />
 
     <ImageView
         android:id="@+id/captionSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/changeBtn"
-        android:layout_alignTop="@+id/caption"
-        android:layout_marginTop="23dp"
+        android:layout_alignBottom="@+id/caption"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:src="@drawable/submit" />
+
+    <EditText
+        android:id="@+id/caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uploadedImageCaption"
+        android:layout_marginTop="41dp"
+        android:layout_toLeftOf="@+id/changeBtn"
+        android:ems="9" />
 
     <ImageView
         android:id="@+id/uploadedImageCaption"
+        android:layout_width="245dp"
+        android:layout_height="160dp"
+        android:layout_alignLeft="@+id/caption"
+        android:layout_centerVertical="true"
+        android:src="@drawable/whitebg" />
+
+    <ImageView
+        android:id="@+id/changeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/changeBtn"
-        android:layout_below="@+id/changeBtn"
-        android:layout_marginTop="51dp"
-        android:src="@drawable/whitebg" />
+        android:layout_above="@+id/uploadedImageCaption"
+        android:layout_toLeftOf="@+id/uploadedImagePreview"
+        android:src="@drawable/change" />
 
 </RelativeLayout>

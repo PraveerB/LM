@@ -3,6 +3,7 @@ package com.example.msn;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -19,7 +20,8 @@ public class CaptionActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_caption);
 		uploadedImage = (ImageView) findViewById(R.id.uploadedImageCaption);
-		uploadedImage.setImageBitmap(UserInfo.getUploadedImage());
+		byte[] imageByteArray = UserInfo.getUploadedImage();
+		uploadedImage.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray  , 0, imageByteArray.length));
 		changeBtn = (ImageView) findViewById(R.id.changeBtn);
 		submitBtn = (ImageView) findViewById(R.id.captionSubmit);
 		caption = (EditText) findViewById(R.id.caption);
