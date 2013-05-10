@@ -52,6 +52,11 @@
             android:name="com.example.msn.GalleryActivity"
             android:label="@string/title_activity_gallery"  
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.example.msn.GALLERY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.example.msn.CaptionActivity"

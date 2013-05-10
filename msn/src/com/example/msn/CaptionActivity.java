@@ -6,11 +6,14 @@ import java.io.InputStreamReader;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -87,13 +90,23 @@ public class CaptionActivity extends Activity {
 			bitmap.compress(CompressFormat.JPEG, 50, bos);
 			byte[] data = bos.toByteArray();
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost postRequest = new HttpPost("http://192.168.1.141:8888/files/upload_file.php");
+			HttpPost postRequest = new HttpPost("http://192.168.1.143:3000/offers/test_photo_upload_from_android");
 			String fileName = String.format("File_%d.png",new Date().getTime());
 			ByteArrayBody bab = new ByteArrayBody(data, fileName);
+			
 			// File file= new File("/mnt/sdcard/forest.png");
 			// FileBody bin = new FileBody(file);
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			
+//Parameters to send to server
 			reqEntity.addPart("file", bab);
+			reqEntity.addPart("name", new StringBody(UserInfo.getName()));
+			reqEntity.addPart("city", new StringBody(UserInfo.getCity()));
+			reqEntity.addPart("phone", new StringBody(UserInfo.getContact()));
+			reqEntity.addPart("email", new StringBody(UserInfo.getEmail()));
+			reqEntity.addPart("uid", new StringBody(UserInfo.getFb_id()));
+			
+			
 			postRequest.setEntity(reqEntity);
 			int timeoutConnection = 60000;
 			HttpParams httpParameters = new BasicHttpParams();
@@ -101,19 +114,15 @@ public class CaptionActivity extends Activity {
 			int timeoutSocket = 60000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 			HttpConnectionParams.setTcpNoDelay(httpParameters, true);
- 
 			HttpResponse response = httpClient.execute(postRequest);
- 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
- 
 			response.getEntity().getContent(), "UTF-8"));
- 
 			String sResponse;
  
 			StringBuilder s = new StringBuilder();
  
 			while ((sResponse = reader.readLine()) != null) {
- 
+
 				s = s.append(sResponse);
  
 			}
