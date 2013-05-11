@@ -1,10 +1,11 @@
 package com.example.msn;
 
 import java.io.ByteArrayOutputStream;
-import java.sql.Blob;
+
+import com.facebook.*;
+import com.facebook.model.*;
 
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.annotation.SuppressLint;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class UploadGalleryActivity extends Activity {
 	ImageView uploadBtn;
@@ -50,6 +52,31 @@ public class UploadGalleryActivity extends Activity {
 		uploadBtn = (ImageView) findViewById(R.id.camera);
 		popupLayout = (RelativeLayout) findViewById(R.id.popupLayout);
 		uploadChoices = (ImageView) findViewById(R.id.uploadBtn);
+		Session.openActiveSession(this, true, new Session.StatusCallback() {
+
+		      // callback when session changes state
+		      @Override
+		      public void call(Session session, SessionState state, Exception exception) {
+		        if (session.isOpened()) {
+		          // make request to the /me API
+		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+
+		            // callback after Graph API response with user object
+		            @Override
+		            public void onCompleted(GraphUser user, Response response) {
+		              if (user != null) {
+		                TextView welcome = (TextView) findViewById(R.id.welcome);
+		                welcome.setText("Hello " + user.getName() + "!");
+		              }
+		            }
+		          });
+		        }
+		        else{
+		        	System.out.println("Session not open.........");
+		        }
+		      }
+		    });	
+		
 		uploadChoices.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -94,6 +121,8 @@ public class UploadGalleryActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		
 		System.out.println("onActivityResult...");
 		if(resultCode == RESULT_OK){
 			System.out.println("Inside if.."+ requestCode);
