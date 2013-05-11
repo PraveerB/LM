@@ -8,5 +8,6 @@
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_caption">CaptionActivity</string>
     <string name="title_activity_done">DoneActivity</string>
+    <string name="app_id">652414728108978</string>
 
 </resources>

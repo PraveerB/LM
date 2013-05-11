@@ -47,32 +47,34 @@ public class UploadGalleryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		System.out.println("startActivityForResult");
 		setContentView(R.layout.activity_uploadgallery);
 		uploadBtn = (ImageView) findViewById(R.id.camera);
 		popupLayout = (RelativeLayout) findViewById(R.id.popupLayout);
 		uploadChoices = (ImageView) findViewById(R.id.uploadBtn);
+		
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
-
+			  
 		      // callback when session changes state
-		      @Override
+		      @Override 	
 		      public void call(Session session, SessionState state, Exception exception) {
 		        if (session.isOpened()) {
 		          // make request to the /me API
 		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-
+		        	 
 		            // callback after Graph API response with user object
 		            @Override
 		            public void onCompleted(GraphUser user, Response response) {
 		              if (user != null) {
 		                TextView welcome = (TextView) findViewById(R.id.welcome);
-		                welcome.setText("Hello " + user.getName() + "!");
+		                welcome.setText("Hello " + user.getId() + "!");
+		                UserInfo.setFb_id(user.getId());
+		                //welcome.setText(user.toString());
 		              }
 		            }
 		          });
 		        }
 		        else{
-		        	System.out.println("Session not open.........");
+		        	//call(session, state, exception);
 		        }
 		      }
 		    });	
@@ -135,6 +137,8 @@ public class UploadGalleryActivity extends Activity {
 	            byte[] byteArray = stream.toByteArray();
 				
 				UserInfo.setUploadedImage(byteArray);
+				Intent captionIntent = new Intent("com.example.msn.CAPTION");
+				startActivity(captionIntent);
 			}
 			else if(galleryData) {
 				//galery processing
@@ -154,9 +158,10 @@ public class UploadGalleryActivity extends Activity {
 	            byte[] byteArray = stream.toByteArray();
 	            
 				UserInfo.setUploadedImage(byteArray);
+				Intent captionIntent = new Intent("com.example.msn.CAPTION");
+				startActivity(captionIntent);
 			}
-			Intent captionIntent = new Intent("com.example.msn.CAPTION");
-			startActivity(captionIntent);
+			
 		}
 	}
 
