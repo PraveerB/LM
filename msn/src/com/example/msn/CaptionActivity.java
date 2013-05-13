@@ -94,7 +94,7 @@ public class CaptionActivity extends Activity {
 			bitmap.compress(CompressFormat.JPEG, 50, bos);
 			byte[] data = bos.toByteArray();
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost postRequest = new HttpPost("http://192.168.1.143:3000/offers/test_photo_upload_from_android");
+			HttpPost postRequest = new HttpPost("http://msncontest-fb.azurewebsites.net/index.php/site/getMobileData");
 			String fileName = String.format("File_%d.png",new Date().getTime());
 			ByteArrayBody bab = new ByteArrayBody(data, fileName);
 			
