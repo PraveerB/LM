@@ -11,6 +11,14 @@ public class UserInfo {
 	private static String contact;
 	private static String fb_id;
 	private static byte[] uploadedImage;
+	private static String accessToken;
+	
+	public static String getAccessToken() {
+		return accessToken;
+	}
+	public static void setAccessToken(String accessToken) {
+		UserInfo.accessToken = accessToken;
+	}
 	public static String getName() {
 		return name;
 	}

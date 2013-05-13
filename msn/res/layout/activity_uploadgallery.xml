@@ -12,7 +12,7 @@
     
 
     <ImageView
-        android:id="@+id/selectFromGalleryBtn"
+        android:id="@+id/showGalleryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -26,9 +26,9 @@
         android:id="@+id/uploadBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/selectFromGalleryBtn"
+        android:layout_alignTop="@+id/showGalleryBtn"
         android:layout_marginLeft="50dp"
-        android:layout_toRightOf="@+id/selectFromGalleryBtn"
+        android:layout_toRightOf="@+id/showGalleryBtn"
         android:clickable="true"
         android:src="@drawable/upload" />
 
@@ -66,14 +66,14 @@
         android:id="@+id/phonegallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/facebook"
+        android:layout_above="@+id/facebookSelectPhoto"
         android:layout_alignRight="@+id/whitebg"
         android:layout_marginBottom="14dp"
         android:layout_marginRight="16dp"
         android:src="@drawable/phonegallery" />
 
     <ImageView
-        android:id="@+id/facebook"
+        android:id="@+id/facebookSelectPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/phonegallery"
@@ -84,8 +84,8 @@
         android:id="@+id/camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/facebook"
-        android:layout_below="@+id/facebook"
+        android:layout_alignLeft="@+id/facebookSelectPhoto"
+        android:layout_below="@+id/facebookSelectPhoto"
         android:layout_marginTop="14dp"
         android:src="@drawable/cameragallery" />
 
