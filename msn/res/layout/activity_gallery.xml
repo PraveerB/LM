@@ -26,5 +26,33 @@
         android:layout_alignBottom="@+id/testText"
         android:layout_alignLeft="@+id/testText"
         android:layout_marginBottom="68dp"/>
+    
+    <HorizontalScrollView 
+        android:id="@+id/scroller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:id="@+id/galleryLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+             >
+        <ImageView 
+            android:src="@drawable/cameragallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            />
+         <ImageView 
+            android:src="@drawable/cameragallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            />
+          <ImageView 
+            android:src="@drawable/cameragallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            />
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </RelativeLayout>

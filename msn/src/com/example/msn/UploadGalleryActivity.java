@@ -27,6 +27,7 @@ public class UploadGalleryActivity extends Activity {
 	Intent cameraIntent;
 	ImageView closeBtn;
 	Bitmap bmp;
+	ImageView galleryBtn;
 	private ImageView selectFromGalleryBtn;
 	boolean galleryData = false;
 	boolean cameraData = false;
@@ -51,7 +52,16 @@ public class UploadGalleryActivity extends Activity {
 		uploadBtn = (ImageView) findViewById(R.id.camera);
 		popupLayout = (RelativeLayout) findViewById(R.id.popupLayout);
 		uploadChoices = (ImageView) findViewById(R.id.uploadBtn);
-		
+		galleryBtn = (ImageView) findViewById(R.id.selectFromGalleryBtn);
+		galleryBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent showGallery = new Intent("com.example.msn.GALLERY");
+				startActivity(showGallery);
+			}
+		});
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
 			  
 		      // callback when session changes state

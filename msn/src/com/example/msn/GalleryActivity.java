@@ -29,12 +29,15 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class GalleryActivity extends Activity {
 	ImageView userEntryImage;
+	LinearLayout gallerylayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		gallerylayout = (LinearLayout) findViewById(R.id.galleryLayout);
 		System.out.println("executeMultipartPost()");
 		executeMultipartPost();
 		setContentView(R.layout.activity_gallery);
@@ -77,8 +80,9 @@ public class GalleryActivity extends Activity {
 						//URL url = new URL(image_url);
 						//URI uri = url.toURI();
 						System.out.println(image_url);
-						System.out.println(getImageBitmap(image_url));
-						userEntryImage.setImageBitmap(BitmapFactory.decodeStream((InputStream)new URL(image_url).getContent()));
+						//System.out.println(getImageBitmap(image_url));
+						//userEntryImage.setImageBitmap(BitmapFactory.decodeStream((InputStream)new URL(image_url).getContent()));
+						//userEntryImage.setImageResource(R.id.participateBtn);
 						break;
 					}
 			} catch (Exception e) {
