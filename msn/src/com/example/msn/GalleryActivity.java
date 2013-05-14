@@ -80,6 +80,7 @@ public class GalleryActivity extends Activity {
 						//URL url = new URL(image_url);
 						//URI uri = url.toURI();
 						System.out.println(image_url);
+						//userEntryImage.
 						//System.out.println(getImageBitmap(image_url));
 						//userEntryImage.setImageBitmap(BitmapFactory.decodeStream((InputStream)new URL(image_url).getContent()));
 						//userEntryImage.setImageResource(R.id.participateBtn);

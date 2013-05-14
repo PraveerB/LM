@@ -108,9 +108,9 @@ public class CaptionActivity extends Activity {
 			reqEntity.addPart("city", new StringBody(UserInfo.getCity()));
 			reqEntity.addPart("phone", new StringBody(UserInfo.getContact()));
 			reqEntity.addPart("email", new StringBody(UserInfo.getEmail()));
-			reqEntity.addPart("uid", new StringBody(UserInfo.getFb_id()));
+			//reqEntity.addPart("uid", new StringBody(UserInfo.getFb_id()));
 			
-			
+			System.out.println("ReqEntity: " + reqEntity);
 			postRequest.setEntity(reqEntity);
 			int timeoutConnection = 60000;
 			HttpParams httpParameters = new BasicHttpParams();
