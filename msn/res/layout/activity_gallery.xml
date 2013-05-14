@@ -9,22 +9,26 @@
     tools:context=".GalleryActivity"
     android:background="@drawable/bg_gallery" >
 
-    <TextView
-        android:id="@+id/testText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="76dp"
-        android:layout_marginTop="195dp"
-        android:text="TextView" />
-
     <ImageView
         android:id="@+id/userEntryImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/testText"
-        android:layout_alignLeft="@+id/testText"
-        android:layout_marginBottom="68dp"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="116dp"
+         />
+    
+    <HorizontalScrollView
+        android:id="@+id/galleryHorizontalScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/userEntryImage"
+        android:layout_below="@+id/userEntryImage"
+        android:layout_marginTop="140dp" >
 
+    </HorizontalScrollView>
+
+    
+    
 </RelativeLayout>

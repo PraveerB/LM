@@ -88,14 +88,16 @@ public class CaptionActivity extends Activity {
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy); 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			/*ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			BitmapDrawable drawable = (BitmapDrawable) uploadedImage.getDrawable();
 			Bitmap bitmap = drawable.getBitmap();
 			bitmap.compress(CompressFormat.JPEG, 50, bos);
-			byte[] data = bos.toByteArray();
+			byte[] data = bos.toByteArray();*/
+			byte[] data = UserInfo.getUploadedImage();
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost postRequest = new HttpPost("http://msncontest-fb.azurewebsites.net/index.php/site/getMobileData");
-			String fileName = String.format("File_%d.png",new Date().getTime());
+			//String fileName = String.format("File_%d.png",new Date().getTime());
+			String fileName = "File.png";
 			ByteArrayBody bab = new ByteArrayBody(data, fileName);
 			
 			// File file= new File("/mnt/sdcard/forest.png");
