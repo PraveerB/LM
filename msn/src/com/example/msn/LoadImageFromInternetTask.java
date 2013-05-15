@@ -43,8 +43,8 @@ public class LoadImageFromInternetTask extends AsyncTask<ImageView, Void, Bitmap
 			//options.inPreferredConfig = Config.RGB_565;
 			System.out.println("Async task..........");
 			bmp = BitmapFactory.decodeStream(ulrn.openConnection().getInputStream(), null, options);
-			System.out.println("bmp"+ bmp);
-			Log.e("Tag",""+imageView.getTag());
+			//System.out.println("bmp"+ bmp);
+			//Log.e("Tag",""+imageView.getTag());
             if (null != bmp)
                 return bmp;
 

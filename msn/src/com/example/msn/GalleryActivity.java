@@ -49,6 +49,7 @@ public class GalleryActivity extends Activity {
 		setContentView(R.layout.activity_gallery);
 		userEntryImage = (ImageView)findViewById(R.id.userEntryImage);
 		scrollView = (HorizontalScrollView) findViewById(R.id.galleryHorizontalScrollView);
+		//userEntryImage.setBackgroundColor(10);
 		entryList = new ArrayList<Entry>();
 		executeMultipartPost();
 		
@@ -87,12 +88,17 @@ public class GalleryActivity extends Activity {
 				 LinearLayout topLinearLayout = new LinearLayout(this);
 				 topLinearLayout.setOrientation(LinearLayout.HORIZONTAL); 
 				JSONArray jsonArray = new JSONArray(json_response.toString());
+				
+				//userEntryImage.setTag("https://apps51.likemyworld.com/ChaddiBuddy/app/assets/images/btn-gallery2.png");
+				//new LoadImageFromInternetTask().execute(userEntryImage);
+				
 				for (int i = 0; i < jsonArray.length(); i++) {
+					
 						URL url;
 						final ImageView imageView = new ImageView (this);
 			            //imageView.setTag(i);
 						JSONObject joObject = jsonArray.getJSONObject(i);
-						Entry entry = new Entry();
+						final Entry entry = new Entry();
 						
 						entry.setId(Integer.parseInt(joObject.get("id").toString()));
 						entry.setVotes(Integer.parseInt(joObject.get("votes").toString()));
@@ -100,16 +106,20 @@ public class GalleryActivity extends Activity {
 						entry.setImage_location(joObject.get("image_location").toString());
 						//entry.setName(joObject.get("fb_user_id").toString());
 						entryList.add(entry);
+						final String image_url;
 						//String image_url = "https://msncontest-fb.azurewebsites.net/uploads/" + joObject.get("image_location").toString();
-						String image_url  = "https://apps51.likemyworld.com/ChaddiBuddy/app/assets/images/btn-gallery2.png";
-						//String image_url  = entry.getImage_location();
+						if(i % 2 == 0){
+							image_url  = "https://apps51.likemyworld.com/ChaddiBuddy/app/assets/images/btn-gallery2.png";
+						}
+						else{
+							image_url  = "https://apps51.likemyworld.com/ChaddiBuddy/app/assets/images/btn-home.png";
+						}
+						
 						imageView.setId(i);
-						//System.out.println("userEntryImage" +imageView);
 						imageView.setTag(image_url);
 						
-						new LoadImageFromInternetTask().execute(imageView);
 						
-						//userEntryImage.setTag(image_url);
+						new LoadImageFromInternetTask().execute(imageView);
 						imageView.setOnClickListener(new OnClickListener()
 			            {
 
@@ -118,18 +128,22 @@ public class GalleryActivity extends Activity {
 			                {
 			                    // TODO Auto-generated method stub
 			                	System.out.println("Onclick---------");
+			                	//userEntryImage.setTag(entry.getImage_location());
+			                	userEntryImage.setTag(image_url);
+								new LoadImageFromInternetTask().execute(userEntryImage);
 			                	//new LoadImageFromInternetTask().execute(userEntryImage);
 			                	//userEntryImage.
 			                    Log.e("Tag",""+imageView.getTag());
 			                }
 			            });
-						
+						//userEntryImage.setTag(jsonArray.getJSONObject(0));
+						//new LoadImageFromInternetTask().execute(userEntryImage);
 						topLinearLayout.addView(imageView);
 					}
-				
+				//userEntryImage.setTag(jsonArray.getJSONObject(0));
 				scrollView.addView(topLinearLayout);
 				System.out.println("Out.........");
-				new LoadImageFromInternetTask().execute(userEntryImage);
+				//new LoadImageFromInternetTask().execute(userEntryImage);
 			} catch (Exception e) {
 				System.out.println("Exception");
 				e.printStackTrace();

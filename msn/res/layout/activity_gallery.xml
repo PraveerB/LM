@@ -2,33 +2,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_gallery"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".GalleryActivity"
-    android:background="@drawable/bg_gallery" >
+    tools:context=".GalleryActivity" >
+
+    <ImageView
+        android:id="@+id/allImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/userEntryImage"
+        android:layout_marginTop="33dp"
+        android:src="@drawable/allentries" />
+
+    <ImageView
+        android:id="@+id/recentImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/allImages"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="12dp"
+        android:layout_toLeftOf="@+id/allImages"
+        android:src="@drawable/recententries" />
 
     <ImageView
         android:id="@+id/userEntryImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="116dp"
-         />
-    
+        android:layout_below="@+id/allImages"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/gallerybg" />
+
     <HorizontalScrollView
         android:id="@+id/galleryHorizontalScrollView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_alignLeft="@+id/userEntryImage"
-        android:layout_below="@+id/userEntryImage"
-        android:layout_marginTop="140dp" >
-
+        android:layout_below="@+id/userEntryImage" >
     </HorizontalScrollView>
-
-    
     
 </RelativeLayout>
