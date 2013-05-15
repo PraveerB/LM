@@ -1,20 +1,22 @@
 package com.example.msn;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-import com.facebook.*;
-import com.facebook.android.Facebook;
-import com.facebook.model.*;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,15 +24,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
+
 public class UploadGalleryActivity extends Activity {
 	ImageView uploadBtn;
 	ImageView uploadChoices;
 	Intent cameraIntent;
 	ImageView closeBtn;
 	Bitmap bmp;
+	ImageView galleryBtn;
 	private ImageView selectFromGalleryBtn;
-	private ImageView selectFromFacebookBtn;
-	private ImageView showGalleryBtn;
 	boolean galleryData = false;
 	boolean cameraData = false;
 	RelativeLayout popupLayout;
@@ -54,12 +61,49 @@ public class UploadGalleryActivity extends Activity {
 		uploadBtn = (ImageView) findViewById(R.id.camera);
 		popupLayout = (RelativeLayout) findViewById(R.id.popupLayout);
 		uploadChoices = (ImageView) findViewById(R.id.uploadBtn);
-		
-		uploadChoices.setOnClickListener(new OnClickListener() {
+		galleryBtn = (ImageView) findViewById(R.id.showGalleryBtn);
+		galleryBtn.setOnClickListener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				faceBookGraphApiCall();
+				Intent showGallery = new Intent("com.example.msn.GALLERY");
+				startActivity(showGallery);
+			}
+		});
+		/*
+		Session.openActiveSession(this, true, new Session.StatusCallback() {
+			  
+		      // callback when session changes state
+		      @Override 	
+		      public void call(Session session, SessionState state, Exception exception) {
+		        if (session.isOpened()) {
+		          // make request to the /me API
+		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+		        	 
+		            // callback after Graph API response with user object
+		            @Override
+		            public void onCompleted(GraphUser user, Response response) {
+		              if (user != null) {
+		                TextView welcome = (TextView) findViewById(R.id.welcome);
+		                welcome.setText("Hello " + user.getId() + "!");
+		                UserInfo.setFb_id(user.getId());
+		                //welcome.setText(user.toString());
+		              }
+		            }
+		          });
+		        }
+		        else{
+		        	//call(session, state, exception);
+		        }
+		      }
+		    });	
+		*/
+		uploadChoices.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
 				popupLayout.setVisibility(0);
 			}
 		});
@@ -93,33 +137,13 @@ public class UploadGalleryActivity extends Activity {
 				selectFromGallery();
 			}
 		});
-		
-		showGalleryBtn = (ImageView) findViewById(R.id.showGalleryBtn);
-		showGalleryBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Intent galleryIntent =new Intent("com.example.msn.GALLERY");
-				startActivity(galleryIntent);
-			}
-		});
-		
-		selectFromFacebookBtn = (ImageView) findViewById(R.id.facebookSelectPhoto);
-		selectFromFacebookBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//show all facebook photos
-				System.out.println("show all facebook photos........");
-				getFaceBookUserPhotos();
-			}
-		});
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		//Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 		
 		System.out.println("onActivityResult...");
 		if(resultCode == RESULT_OK){
@@ -153,6 +177,75 @@ public class UploadGalleryActivity extends Activity {
 	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 	            String filePath = cursor.getString(columnIndex);
 	            cursor.close();
+	            /*
+	            HttpURLConnection connection = null;
+	            DataOutputStream outputStream = null;
+	            DataInputStream inputStream = null;
+
+	            String pathToOurFile = filePath;
+	            String urlServer = "http://msncontest-fb.azurewebsites.net/index.php/site/getMobileData";
+	            String lineEnd = "\r\n";
+	            String twoHyphens = "--";
+	            String boundary =  "*****";
+
+	            int bytesRead, bytesAvailable, bufferSize;
+	            byte[] buffer;
+	            int maxBufferSize = 1*1024*1024;
+
+	            try
+	            {
+	            FileInputStream fileInputStream = new FileInputStream(new File(pathToOurFile) );
+
+	            URL url = new URL(urlServer);
+	            connection = (HttpURLConnection) url.openConnection();
+
+	            // Allow Inputs & Outputs
+	            connection.setDoInput(true);
+	            connection.setDoOutput(true);
+	            connection.setUseCaches(false);
+
+	            // Enable POST method
+	            connection.setRequestMethod("POST");
+
+	            connection.setRequestProperty("Connection", "Keep-Alive");
+	            connection.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
+
+	            outputStream = new DataOutputStream( connection.getOutputStream() );
+	            outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+	            outputStream.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + pathToOurFile +"\"" + lineEnd);
+	            outputStream.writeBytes(lineEnd);
+
+	            bytesAvailable = fileInputStream.available();
+	            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+	            buffer = new byte[bufferSize];
+
+	            // Read file
+	            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+	            while (bytesRead > 0)
+	            {
+	            outputStream.write(buffer, 0, bufferSize);
+	            bytesAvailable = fileInputStream.available();
+	            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+	            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+	            }
+
+	            outputStream.writeBytes(lineEnd);
+	            outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+	            // Responses from the server (code and message)
+	            int serverResponseCode = connection.getResponseCode();
+	            String serverResponseMessage = connection.getResponseMessage();
+	            System.out.println(serverResponseCode);
+	            System.out.println(serverResponseMessage);
+	            fileInputStream.close();
+	            outputStream.flush();
+	            outputStream.close();
+	            }
+	            catch (Exception ex)
+	            {
+	            //Exception handling
+	            }*/
 	            bmp = BitmapFactory.decodeFile(filePath);
 	            
 	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -183,91 +276,4 @@ public class UploadGalleryActivity extends Activity {
 		
 		
 	}
-
-//get facebook user data
-	private void faceBookGraphApiCall(){
-		Session.openActiveSession(this, true, new Session.StatusCallback() {
-			
-		      // callback when session changes state
-		      @Override 	
-		      public void call(Session session, SessionState state, Exception exception) {
-		    	  		    	  
-		    	System.out.println("inside Call()");
-		    	  
-		        if (session.isOpened()) {
-		        	UserInfo.setAccessToken(session.getAccessToken());
-		          // make request to the /me API
-		        	System.out.println("Session open.....");
-		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-		        	 
-		            // callback after Graph API response with user object
-		            @Override
-		            public void onCompleted(GraphUser user, Response response) {
-		              if (user != null) {
-		                TextView welcome = (TextView) findViewById(R.id.welcome);
-		                welcome.setText("Hello " + user.getId() + "!");
-		                UserInfo.setFb_id(user.getId());
-		                
-		                
-		                
-		                
-		              }
-		            }
-		          });
-		        }
-		        else{
-		        	//call(session, state, exception);
-		        }
-		      }
-		    });	
-	}
-	
-//get facebook user photos
-		private void getFaceBookUserPhotos(){
-			/*private static final String[] PERMISSIONS = { "user_photos" };
-			Facebook facebook = new Facebook("652414728108978");
-			
-			if (!facebook.isSessionValid()) {
-		        facebook.authorize(this, PERMISSIONS, new LoginDialogListener());
-		    }*/
-			/*if (!Session.getActiveSession().getPermissions().contains("publish_stream")) {
-          	  Session.NewPermissionsRequest permissionRequest = // create a NewPermissionsRequest
-          	  permissionRequest.setPermissions(PUBLISH_PERMISSION_LIST);
-          	  Session.getActiveSession().requestNewPublishPermissions(permissionRequest);
-          	}*/
-          
-			
-			/*Session currentSession = Session.getActiveSession();
-		    if (currentSession == null || currentSession.getState().isClosed()) {
-		        Session session = Session.openActiveSession(this, true, fbStatusCallback); // PROBLEM: NO PERMISSIONS YET BUT CALLBACK IS EXECUTED ON OPEN
-		        currentSession = session;
-		    }
-		    if (currentSession != null && !currentSession.isOpened()) {
-		        OpenRequest openRequest = new OpenRequest(this).setCallback(fbStatusCallback); // HERE IT IS OKAY TO EXECUTE THE CALLBACK BECAUSE WE'VE GOT THE PERMISSIONS
-		        if (openRequest != null) {
-		            openRequest.setDefaultAudience(SessionDefaultAudience.FRIENDS);
-		            openRequest.setPermissions(Arrays.asList("friends_hometown"));
-		            openRequest.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
-		            currentSession.openForRead(openRequest);
-		        }
-		    }
-			*/
-			
-			String url = "https://graph.facebook.com/"+UserInfo.getFb_id()+"/albums?access_token="+UserInfo.getAccessToken();
-			System.out.println("url:: "+ url);
-			System.out.println("getFaceBookUserPhotos..");
-			Request.executePostRequestAsync(Session.getActiveSession(), url ,null ,new Request.Callback() {
-			//Request req = new Request(Session.getActiveSession(), url ,null, HttpMethod.POST ,new Request.Callback() {
-				@Override
-				public void onCompleted(Response response) {
-					//System.out.println(request);
-					// TODO Auto-generated method stub
-					System.out.println(response.getGraphObject().getInnerJSONObject().toString());
-					System.out.println("------------------");
-					System.out.println(response.getGraphObject());
-				}
-			
-		
-		});
-		}
-	}
+}

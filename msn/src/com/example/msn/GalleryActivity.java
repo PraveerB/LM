@@ -39,6 +39,7 @@ import android.widget.LinearLayout;
 
 public class GalleryActivity extends Activity {
 	ImageView userEntryImage;
+	LinearLayout gallerylayout;
 	ImageView userEntryImageView;
 	HorizontalScrollView scrollView;
 	ArrayList<Entry> entryList;
@@ -99,6 +100,19 @@ public class GalleryActivity extends Activity {
 			            //imageView.setTag(i);
 						JSONObject joObject = jsonArray.getJSONObject(i);
 						final Entry entry = new Entry();
+
+						/*
+						String image_url = "https://msncontest-fb.azurewebsites.net/uploads/" + joObject.get("image_location").toString();
+						//URL url = new URL(image_url);
+						//URI uri = url.toURI();
+						System.out.println(image_url);
+						//userEntryImage.
+						//System.out.println(getImageBitmap(image_url));
+						//userEntryImage.setImageBitmap(BitmapFactory.decodeStream((InputStream)new URL(image_url).getContent()));
+						//userEntryImage.setImageResource(R.id.participateBtn);
+						break;*/
+
+						//Entry entry = new Entry();
 						
 						entry.setId(Integer.parseInt(joObject.get("id").toString()));
 						entry.setVotes(Integer.parseInt(joObject.get("votes").toString()));
