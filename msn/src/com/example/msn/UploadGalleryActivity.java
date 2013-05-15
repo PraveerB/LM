@@ -48,6 +48,7 @@ public class UploadGalleryActivity extends Activity {
 		popupLayout = (RelativeLayout) findViewById(R.id.popupLayout);
 		uploadChoices = (ImageView) findViewById(R.id.uploadBtn);
 		galleryBtn = (ImageView) findViewById(R.id.showGalleryBtn);
+		
 		galleryBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override

@@ -22,8 +22,8 @@ import com.facebook.*;
 import com.facebook.model.*;
 
 class ConnectionHelper {
-	String res;
-	void connectToFacebook(Activity activity) {
+	String res = "test";
+	String connectToFacebook(Activity activity) {
 		Session.openActiveSession(activity, true, new Session.StatusCallback() {
 			  
 		      // callback when session changes state
@@ -59,13 +59,12 @@ class ConnectionHelper {
 		            }
 		          });
 		        }
-		        else{
-		        	//call(session, state, exception);
-		        }
 		      }
 		    });	
+		return res;
     }
 	String saveMobileUserInfo() {
+		StringBuilder s = new StringBuilder("test1");
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy); 
@@ -104,7 +103,7 @@ class ConnectionHelper {
 			response.getEntity().getContent(), "UTF-8"));
 			String sResponse;
  
-			StringBuilder s = new StringBuilder();
+			s = new StringBuilder();
  
 			while ((sResponse = reader.readLine()) != null) {
 
@@ -113,7 +112,7 @@ class ConnectionHelper {
 			}
  
 			System.out.println("Response: " + s);
-			return s.toString();
+			
  
 		} catch (Exception e) {
 			System.out.println("Exception");
@@ -121,7 +120,7 @@ class ConnectionHelper {
 			e.printStackTrace();
 			// Log.e(e.getClass().getName(), e.getMessage());
 		}
-		return null;
+		return s.toString();
 	}
 	
 	

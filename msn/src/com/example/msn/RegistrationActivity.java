@@ -3,6 +3,12 @@ package com.example.msn;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +29,48 @@ public class RegistrationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration);
+		Session.openActiveSession(this, true, new Session.StatusCallback() {
+			  
+		      // callback when session changes state
+		      @Override 	
+		      public void call(Session session, SessionState state, Exception exception) {
+		        if (session.isOpened()) {
+		          // make request to the /me API
+		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+		        	 
+		            // callback after Graph API response with user object
+		            @Override
+		            public void onCompleted(GraphUser user, Response response) {
+		              if (user != null) {
+		                //TextView welcome = (TextView) findViewById(R.id.welcome);
+		                //welcome.setText("Hello " + user.getId() + "!");
+		            	System.out.println("inside not null");
+		                UserInfo.setFb_id(user.getId());
+		                UserInfo.setFirst_name(user.getFirstName());
+		                if(user.getMiddleName() != null)
+		                	UserInfo.setMiddle_name(user.getMiddleName());
+		                if(user.getLastName() != null)
+		                	UserInfo.setLast_name(user.getLastName());
+		                if(user.getProperty("gender") != null)
+		                	UserInfo.setGender((String) user.getProperty("gender"));
+		                if(user.getUsername() != null)
+		                	UserInfo.setUsername(user.getUsername());
+		                else
+		                UserInfo.setUsername(user.getId());	
+		                UserInfo.displayData();
+		                //welcome.setText(user.toString());
+		                ConnectionHelper con = new ConnectionHelper();
+		                String res = con.saveMobileUserInfo();
+		                if(con.res.equals("old")) { 
+		                	Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
+		                	startActivity(uploadGalleryIntent);
+		                }
+		              }
+		            }
+		          });
+		        }
+		      }
+		    });	
 		submitBtn = (ImageView) findViewById(R.id.submit1);
 		name = (EditText) findViewById(R.id.name);
 		city = (EditText) findViewById(R.id.city);
@@ -75,7 +123,7 @@ public class RegistrationActivity extends Activity {
 				}
 			}
 		});
-	}
+        }
 
 	public boolean chkEmail(String uemail) {
 		String regEx = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b";

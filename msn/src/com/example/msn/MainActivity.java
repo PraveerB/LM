@@ -8,12 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
-
 public class MainActivity extends Activity  {
 	
 	ImageView participateBtn;
@@ -27,16 +21,9 @@ public class MainActivity extends Activity  {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 
-                ConnectionHelper con = new ConnectionHelper();
-                con.connectToFacebook(MainActivity.this);
-                if(con.res.equals("new")) {
+                
     				Intent regIntent = new Intent("com.example.msn.REG");
     				startActivity(regIntent);
-                }
-                else {
-                	Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
-    				startActivity(uploadGalleryIntent);
-                }
 			}
 		});
     }
