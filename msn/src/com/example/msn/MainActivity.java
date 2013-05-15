@@ -11,11 +11,22 @@ import android.widget.ImageView;
 public class MainActivity extends Activity  {
 	
 	ImageView participateBtn;
+	ImageView gotoGallery;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         participateBtn = (ImageView) findViewById(R.id.participateBtn);
+        gotoGallery = (ImageView) findViewById(R.id.gotoGallery);
+        gotoGallery.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent gallery = new Intent("com.example.msn.GALLERY");
+				startActivity(gallery);
+			}
+		});
         participateBtn.setOnClickListener(new OnClickListener() {
         	@Override
 			public void onClick(View arg0) {
