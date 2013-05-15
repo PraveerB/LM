@@ -1,9 +1,5 @@
 package com.example.msn;
 
-import java.sql.Blob;
-
-import android.graphics.Bitmap;
-
 public class UserInfo {
 	private static String name;
 	private static String email;

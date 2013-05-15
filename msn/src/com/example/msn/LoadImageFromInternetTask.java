@@ -1,15 +1,11 @@
 package com.example.msn;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 public class LoadImageFromInternetTask extends AsyncTask<ImageView, Void, Bitmap> {

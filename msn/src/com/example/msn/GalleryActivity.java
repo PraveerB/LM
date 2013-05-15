@@ -1,14 +1,8 @@
 package com.example.msn;
 
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -21,14 +15,9 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.net.Uri;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -95,7 +84,7 @@ public class GalleryActivity extends Activity {
 				
 				for (int i = 0; i < jsonArray.length(); i++) {
 					
-						URL url;
+						//URL url;
 						final ImageView imageView = new ImageView (this);
 			            //imageView.setTag(i);
 						JSONObject joObject = jsonArray.getJSONObject(i);

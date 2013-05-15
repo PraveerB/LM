@@ -3,12 +3,11 @@ package com.example.msn;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -40,37 +39,37 @@ public class RegistrationActivity extends Activity {
 				String uemail = email.getText().toString();
 				String ucity = city.getText().toString();
 				String ucontact = contact.getText().toString();
-				UserInfo userInfo = new UserInfo();
+				//UserInfo userInfo = new UserInfo();
 				System.out.println(uname.length());
 				if(uname.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Name!!", 100);
+					toast = Toast.makeText(getBaseContext(), "Please Enter Name!!", Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else if(uemail.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Email!!", 100);
+					toast = Toast.makeText(getBaseContext(), "Please Enter Email!!", Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else if(ucity.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter City!!", 100);
+					toast = Toast.makeText(getBaseContext(), "Please Enter City!!", Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else if(ucontact.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Mobile Number!!", 100);
+					toast = Toast.makeText(getBaseContext(), "Please Enter Mobile Number!!", Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else if(!chkEmail(uemail)) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Valid Email!!", 100);
+					toast = Toast.makeText(getBaseContext(), "Please Enter Valid Email!!", Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else if(ucontact.length() != 10) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Valid 10 digit Mobile Number!!", 100);
+					toast = Toast.makeText(getBaseContext(), "Please Enter Valid 10 digit Mobile Number!!", Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else {
-					userInfo.setName(uname);
-					userInfo.setEmail(uemail);
-					userInfo.setCity(ucity);
-					userInfo.setContact(ucontact);
+					UserInfo.setName(uname);
+					UserInfo.setEmail(uemail);
+					UserInfo.setCity(ucity);
+					UserInfo.setContact(ucontact);
 					Intent uploadIntent = new Intent("com.example.msn.UPLOADGALLERY");
 					startActivity(uploadIntent);
 				}
