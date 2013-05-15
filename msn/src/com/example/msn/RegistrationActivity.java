@@ -76,7 +76,6 @@ public class RegistrationActivity extends Activity {
 		city = (EditText) findViewById(R.id.city);
 		email = (EditText) findViewById(R.id.email);
 		contact = (EditText) findViewById(R.id.phone);
-	
 		submitBtn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -143,5 +142,12 @@ public class RegistrationActivity extends Activity {
 		getMenuInflater().inflate(R.menu.registration, menu);
 		return true;
 	}
+	
+
+	@Override
+	  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	      super.onActivityResult(requestCode, resultCode, data);
+	      Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+	  }
 
 }
