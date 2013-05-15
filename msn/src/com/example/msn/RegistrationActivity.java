@@ -61,7 +61,7 @@ public class RegistrationActivity extends Activity {
 		                //welcome.setText(user.toString());
 		                ConnectionHelper con = new ConnectionHelper();
 		                String res = con.saveMobileUserInfo();
-		                if(con.res.equals("old")) { 
+		                if(UserInfo.getFb_id() != null) { 
 		                	Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
 		                	startActivity(uploadGalleryIntent);
 		                }
