@@ -29,6 +29,7 @@ public class LoadImageFromInternetTask extends AsyncTask<HashMap<Entry, ImageVie
     @Override
     protected void onPostExecute(Bitmap result) {
         imageView.setImageBitmap(result);
+        
         System.out.println("result:: "+result);
         if(entry != null){
         	entry.setBmp(result);

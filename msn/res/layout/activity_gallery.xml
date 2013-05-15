@@ -50,5 +50,52 @@
         android:layout_below="@+id/userEntryImage"
         android:visibility="invisible" >
     </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/userCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/galleryHorizontalScrollView"
+        android:layout_below="@+id/galleryHorizontalScrollView"
+        android:layout_marginTop="17dp"
+        android:textColor="#FFFFFF"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/voteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userCaption"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/userCaption"
+        android:textColor="#FFFFFF"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/likeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/voteCount"
+        android:src="@drawable/like" />
+
+    <ImageView
+        android:id="@+id/fshareBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/allImages"
+        android:layout_alignTop="@+id/voteCount"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/fshare" />
+
+    <TextView
+        android:id="@+id/hiddenIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/userCaption"
+        android:layout_alignRight="@+id/fshareBtn"
+        android:layout_below="@+id/userCaption"
+        android:layout_marginRight="25dp"
+        android:visibility="invisible"
+        android:text="TextView" />
     
 </RelativeLayout>
