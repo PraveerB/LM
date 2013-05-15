@@ -29,6 +29,7 @@ public class MainActivity extends Activity  {
 
                 ConnectionHelper con = new ConnectionHelper();
                 con.connectToFacebook(MainActivity.this);
+                System.out.println(con.res);
                 if(con.res.equals("new")) {
     				Intent regIntent = new Intent("com.example.msn.REG");
     				startActivity(regIntent);

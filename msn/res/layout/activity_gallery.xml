@@ -42,5 +42,13 @@
         android:layout_alignLeft="@+id/userEntryImage"
         android:layout_below="@+id/userEntryImage" >
     </HorizontalScrollView>
+    <HorizontalScrollView
+        android:id="@+id/galleryHorizontalScrollViewRecent"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignLeft="@+id/userEntryImage"
+        android:layout_below="@+id/userEntryImage"
+        android:visibility="invisible" >
+    </HorizontalScrollView>
     
 </RelativeLayout>

@@ -22,7 +22,7 @@ import com.facebook.*;
 import com.facebook.model.*;
 
 class ConnectionHelper {
-	String res;
+	String res = "test";
 	void connectToFacebook(Activity activity) {
 		Session.openActiveSession(activity, true, new Session.StatusCallback() {
 			  
@@ -30,12 +30,14 @@ class ConnectionHelper {
 		      @Override 	
 		      public void call(Session session, SessionState state, Exception exception) {
 		        if (session.isOpened()) {
+		        	System.out.println("session Opened" + session.isOpened());
 		          // make request to the /me API
 		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 		        	 
 		            // callback after Graph API response with user object
 		            @Override
 		            public void onCompleted(GraphUser user, Response response) {
+		            	//System.out.println("session Opened");
 		              if (user != null) {
 		                //TextView welcome = (TextView) findViewById(R.id.welcome);
 		                //welcome.setText("Hello " + user.getId() + "!");
@@ -59,13 +61,12 @@ class ConnectionHelper {
 		            }
 		          });
 		        }
-		        else{
-		        	//call(session, state, exception);
-		        }
+	
 		      }
 		    });	
     }
 	String saveMobileUserInfo() {
+		StringBuilder s= new StringBuilder("test1");
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy); 
@@ -104,7 +105,7 @@ class ConnectionHelper {
 			response.getEntity().getContent(), "UTF-8"));
 			String sResponse;
  
-			StringBuilder s = new StringBuilder();
+			s = new StringBuilder();
  
 			while ((sResponse = reader.readLine()) != null) {
 
@@ -113,7 +114,7 @@ class ConnectionHelper {
 			}
  
 			System.out.println("Response: " + s);
-			return s.toString();
+			
  
 		} catch (Exception e) {
 			System.out.println("Exception");
@@ -121,7 +122,7 @@ class ConnectionHelper {
 			e.printStackTrace();
 			// Log.e(e.getClass().getName(), e.getMessage());
 		}
-		return null;
+		return s.toString();
 	}
 	
 	

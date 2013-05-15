@@ -34,13 +34,16 @@ import android.widget.LinearLayout;
 
 public class GalleryActivity extends Activity {
 	ImageView userEntryImage;
-	LinearLayout gallerylayout;
+	//LinearLayout gallerylayout;
 	ImageView userEntryImageView;
 	HorizontalScrollView scrollView;
+	HorizontalScrollView galleryHorizontalScrollViewRecent;
 	ImageView allEntry;
 	ImageView recentEntry;
 	ArrayList<Entry> entryList;
 	ArrayList<ImageView> allImageViews;
+	LinearLayout topLinearLayoutAll;
+	LinearLayout topLinearLayoutRecent;
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -48,17 +51,25 @@ public class GalleryActivity extends Activity {
 		setContentView(R.layout.activity_gallery);
 		userEntryImage = (ImageView)findViewById(R.id.userEntryImage);
 		scrollView = (HorizontalScrollView) findViewById(R.id.galleryHorizontalScrollView);
+		galleryHorizontalScrollViewRecent= (HorizontalScrollView)findViewById(R.id.galleryHorizontalScrollViewRecent);
 		entryList = new ArrayList<Entry>();
+		
+		topLinearLayoutAll = new LinearLayout(this);
+		topLinearLayoutAll.setOrientation(LinearLayout.HORIZONTAL); 
+		topLinearLayoutRecent= new LinearLayout(this);
+		topLinearLayoutRecent.setOrientation(LinearLayout.HORIZONTAL); 
+		
 		executeMultipartPost();
 		allEntry = (ImageView) findViewById(R.id.allImages);
+		
 		recentEntry = (ImageView) findViewById(R.id.recentImages);
 		allEntry.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				allEntry.setImageResource(R.drawable.allentries_click);
-				recentEntry.setImageResource(R.drawable.recententries);
-				loadAllAndRecentImages("all");
+				//allEntry.setImageResource(R.drawable.allentries_click);
+				//recentEntry.setImageResource(R.drawable.recententries);
+				//loadAllAndRecentImages("all");
 			}
 		});
 		
@@ -66,9 +77,9 @@ public class GalleryActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				allEntry.setImageResource(R.drawable.allentries);
-				recentEntry.setImageResource(R.drawable.recententries_click);
-				loadAllAndRecentImages("recent");
+				//allEntry.setImageResource(R.drawable.allentries);
+				//recentEntry.setImageResource(R.drawable.recententries_click);
+				//loadAllAndRecentImages("recent");
 			}
 		});
 	}
@@ -99,11 +110,15 @@ public class GalleryActivity extends Activity {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"UTF-8"));
 				String sResponse;
 				
+				/*topLinearLayoutAll = new LinearLayout(this);
+				topLinearLayoutAll.setOrientation(LinearLayout.HORIZONTAL); 
+				topLinearLayoutRecent= new LinearLayout(this);
+				topLinearLayoutRecent.setOrientation(LinearLayout.HORIZONTAL); */
+				
 				while ((sResponse = reader.readLine()) != null) {
 					json_response = json_response.append(sResponse);
 				}
-				 LinearLayout topLinearLayout = new LinearLayout(this);
-				 topLinearLayout.setOrientation(LinearLayout.HORIZONTAL); 
+				 
 				JSONArray jsonArray = new JSONArray(json_response.toString());
 				
 				userEntryImage.setTag("https://msncontest-fb.azurewebsites.net/uploads/" + jsonArray.getJSONObject(0).get("image_location").toString());
@@ -112,8 +127,6 @@ public class GalleryActivity extends Activity {
 				firstImg.put(null, userEntryImage);
 				
             	new LoadImageFromInternetTask().execute(firstImg);
-            	
-				
 				for (int i = 0; i < jsonArray.length(); i++) {
 						final ImageView imageView = new ImageView (this);
 						HashMap<Entry , ImageView> entryImageView = new HashMap<Entry, ImageView>();
@@ -126,7 +139,7 @@ public class GalleryActivity extends Activity {
 						entry.setCaption(joObject.get("caption").toString());
 						entry.setImage_location(joObject.get("image_location").toString());
 						//Date date;
-						DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+						DateFormat formatter = new SimpleDateFormat("yyyy-dd-mm");
 						
 						entry.setDate((Date)formatter.parse(joObject.get("create_time").toString()));
 						//entry.setName(joObject.get("fb_user_id").toString());
@@ -141,9 +154,7 @@ public class GalleryActivity extends Activity {
 						entryImageView.put(entry, imageView);
 						new LoadImageFromInternetTask().execute(entryImageView);
 						
-						imageView.setOnClickListener(new OnClickListener()
-			            {
-
+						imageView.setOnClickListener(new OnClickListener(){
 			                @Override
 			                public void onClick(View v)
 			                {
@@ -155,10 +166,19 @@ public class GalleryActivity extends Activity {
 			                    //Log.e("Tag",""+imageView.getTag());
 			                }
 			            });
-						
-						topLinearLayout.addView(imageView);
+						/*if(i<5){
+							topLinearLayoutRecent.addView(imageView);
+							ImageView n =new ImageView();
+							n.setImageBitmap(imageView)
+							topLinearLayoutAll.addView(imageView);
+						}
+						else{
+							topLinearLayoutAll.addView(imageView);
+						}*/
+						topLinearLayoutAll.addView(imageView);
 					}
-				scrollView.addView(topLinearLayout);
+				scrollView.addView(topLinearLayoutAll);
+				//galleryHorizontalScrollViewRecent.addView(topLinearLayoutRecent);
 			} catch (Exception e) {
 				System.out.println("Exception");
 				e.printStackTrace();
@@ -166,7 +186,7 @@ public class GalleryActivity extends Activity {
 		}
 
 	private void loadAllAndRecentImages(String name){
-		Collections.sort(entryList, new Comparator<Entry>() {
+		/*Collections.sort(entryList, new Comparator<Entry>() {
 			   public int compare(Entry o1, Entry o2) {
 				   
 			      Date a = o1.getDate();
@@ -178,20 +198,30 @@ public class GalleryActivity extends Activity {
 			      else
 			         return 1;
 			   }
-			});
+			});*/
 		int count = 0;
 		Iterator<Entry> entry = entryList.iterator();
-		while(entry.hasNext()){
-			if(name == "recent"){
-				if(count++ < 10){
-					System.out.println(entry.next().getVotes());
+		//scrollView.removeAllViewsInLayout();
+		//topLinearLayoutAll.removeViews(5, 10);
+		scrollView.removeViewAt(0);
+		/*if(name == "recent"){
+			while(entry.hasNext()){
+				if(count++ < 5) {
+					final ImageView imageView = new ImageView (this);
+					imageView.setImageBitmap(entry.next().getBmp());
+					topLinearLayoutAll.addView(imageView);
 				}
-				
-			}
-			else{
-				System.out.println(entry.next().getId());
 			}
 			
 		}
+		else{
+			while(entry.hasNext()){
+				final ImageView imageView = new ImageView (this);
+				imageView.setImageBitmap(entry.next().getBmp());
+				topLinearLayoutAll.addView(imageView);
+			}
+			//scrollView.addView(topLinearLayout);
+		}*/
+		//scrollView.addView(topLinearLayoutAll);
 	}
 }
