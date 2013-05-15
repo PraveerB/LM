@@ -22,14 +22,21 @@ public class MainActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         participateBtn = (ImageView) findViewById(R.id.participateBtn);
-        ConnectionHelper con = new ConnectionHelper();
-        con.connectToFacebook(this);
         participateBtn.setOnClickListener(new OnClickListener() {
         	@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent regIntent = new Intent("com.example.msn.REG");
-				startActivity(regIntent);
+
+                ConnectionHelper con = new ConnectionHelper();
+                con.connectToFacebook(MainActivity.this);
+                if(con.res.equals("new")) {
+    				Intent regIntent = new Intent("com.example.msn.REG");
+    				startActivity(regIntent);
+                }
+                else {
+                	Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
+    				startActivity(uploadGalleryIntent);
+                }
 			}
 		});
     }

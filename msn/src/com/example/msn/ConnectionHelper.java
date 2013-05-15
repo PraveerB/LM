@@ -22,6 +22,7 @@ import com.facebook.*;
 import com.facebook.model.*;
 
 class ConnectionHelper {
+	String res;
 	void connectToFacebook(Activity activity) {
 		Session.openActiveSession(activity, true, new Session.StatusCallback() {
 			  
@@ -53,7 +54,7 @@ class ConnectionHelper {
 		                UserInfo.setUsername(user.getId());	
 		                UserInfo.displayData();
 		                //welcome.setText(user.toString());
-		                String res = saveMobileUserInfo();
+		                res = saveMobileUserInfo();
 		              }
 		            }
 		          });
