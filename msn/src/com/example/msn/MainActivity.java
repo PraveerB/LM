@@ -31,16 +31,6 @@ public class MainActivity extends Activity  {
         	@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-/*
-<<<<<<< HEAD
-                ConnectionHelper con = new ConnectionHelper();
-                con.connectToFacebook(MainActivity.this);
-                System.out.println(con.res);
-                if(con.res.equals("new")) {
-=======
-                
->>>>>>> 5530488ed753d71ff20b8d7db05a8864c0623ad8
-*/
     				Intent regIntent = new Intent("com.example.msn.REG");
     				startActivity(regIntent);
 			}
