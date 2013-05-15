@@ -1,11 +1,22 @@
 package com.example.msn;
 
+import android.graphics.Bitmap;
+
 public class Entry {
 	
 	int id;
 	String image_location;
+	Bitmap bmp;
 	String caption;
 	int votes;
+
+	
+	public Bitmap getBmp() {
+		return bmp;
+	}
+	public void setBmp(Bitmap bmp) {
+		this.bmp = bmp;
+	}
 	public int getVotes() {
 		return votes;
 	}

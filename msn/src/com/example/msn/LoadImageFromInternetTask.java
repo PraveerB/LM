@@ -1,6 +1,10 @@
 package com.example.msn;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -8,19 +12,29 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-public class LoadImageFromInternetTask extends AsyncTask<ImageView, Void, Bitmap> {
+public class LoadImageFromInternetTask extends AsyncTask<HashMap<Entry, ImageView>, Void, Bitmap> {
 
     ImageView imageView = null;
+    Entry entry = null;
 
     @Override
-    protected Bitmap doInBackground(ImageView... imageViews ) {
-        this.imageView = imageViews[0];
+    protected Bitmap doInBackground(HashMap<Entry, ImageView>... imageViews ) {
+    	Iterator<java.util.Map.Entry<Entry, ImageView>> ir = imageViews[0].entrySet().iterator();
+    	Map.Entry pairs = ir.next();
+        this.imageView = (ImageView) pairs.getValue();
+        this.entry = (Entry) pairs.getKey();
         return download_Image((String)imageView.getTag());
     }
 
     @Override
     protected void onPostExecute(Bitmap result) {
         imageView.setImageBitmap(result);
+        System.out.println("result:: "+result);
+        if(entry != null){
+        	entry.setBmp(result);
+        	
+        }
+        
     }
 
     private Bitmap download_Image(String url) {
@@ -37,7 +51,7 @@ public class LoadImageFromInternetTask extends AsyncTask<ImageView, Void, Bitmap
 			options.outWidth = 100;
 			options.outHeight = 100 ;
 			//options.inPreferredConfig = Config.RGB_565;
-			System.out.println("Async task..........");
+			//System.out.println("Async task..........");
 			bmp = BitmapFactory.decodeStream(ulrn.openConnection().getInputStream(), null, options);
 			//System.out.println("bmp"+ bmp);
 			//Log.e("Tag",""+imageView.getTag());
@@ -48,4 +62,6 @@ public class LoadImageFromInternetTask extends AsyncTask<ImageView, Void, Bitmap
         catch(Exception e){}
         return bmp;
     }
+    
+    
 }

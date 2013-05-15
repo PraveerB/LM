@@ -16,17 +16,16 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/userEntryImage"
         android:layout_marginTop="33dp"
-        android:src="@drawable/allentries" />
+        android:src="@drawable/recententries" />
 
     <ImageView
         android:id="@+id/recentImages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/allImages"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginRight="15dp"
         android:layout_toLeftOf="@+id/allImages"
-        android:src="@drawable/recententries" />
+        android:src="@drawable/allentries_click" />
 
     <ImageView
         android:id="@+id/userEntryImage"
