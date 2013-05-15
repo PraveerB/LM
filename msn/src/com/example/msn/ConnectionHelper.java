@@ -41,12 +41,14 @@ class ConnectionHelper {
 		            	System.out.println("inside not null");
 		                UserInfo.setFb_id(user.getId());
 		                UserInfo.setFirst_name(user.getFirstName());
-		                UserInfo.setMiddle_name(user.getMiddleName());
-		                UserInfo.setLast_name(user.getLastName());
+		                if(user.getMiddleName() != null)
+		                	UserInfo.setMiddle_name(user.getMiddleName());
+		                if(user.getLastName() != null)
+		                	UserInfo.setLast_name(user.getLastName());
 		                if(user.getProperty("gender") != null)
-		                UserInfo.setGender((String) user.getProperty("gender"));
+		                	UserInfo.setGender((String) user.getProperty("gender"));
 		                if(user.getUsername() != null)
-		                UserInfo.setUsername(user.getUsername());
+		                	UserInfo.setUsername(user.getUsername());
 		                else
 		                UserInfo.setUsername(user.getId());	
 		                UserInfo.displayData();
@@ -83,7 +85,7 @@ class ConnectionHelper {
 			reqEntity.addPart("first_name", new StringBody(UserInfo.getFirstName()));
 			reqEntity.addPart("fb_id", new StringBody(UserInfo.getFb_id()));
 			reqEntity.addPart("username", new StringBody(UserInfo.getUsername()));
-			reqEntity.addPart("middle_name", new StringBody(UserInfo.getMiddle_name()));
+			//reqEntity.addPart("middle_name", new StringBody(UserInfo.getMiddle_name()));
 			reqEntity.addPart("last_name", new StringBody(UserInfo.getLast_name()));
 			reqEntity.addPart("gender", new StringBody(UserInfo.getGender()));
 			//reqEntity.addPart("uid", new StringBody(UserInfo.getFb_id()));
@@ -120,4 +122,6 @@ class ConnectionHelper {
 		}
 		return null;
 	}
+	
+	
 }

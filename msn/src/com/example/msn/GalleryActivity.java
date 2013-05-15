@@ -3,7 +3,12 @@ package com.example.msn;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -120,6 +125,10 @@ public class GalleryActivity extends Activity {
 						entry.setVotes(Integer.parseInt(joObject.get("votes").toString()));
 						entry.setCaption(joObject.get("caption").toString());
 						entry.setImage_location(joObject.get("image_location").toString());
+						//Date date;
+						DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+						
+						entry.setDate((Date)formatter.parse(joObject.get("create_time").toString()));
 						//entry.setName(joObject.get("fb_user_id").toString());
 						
 						entryList.add(entry);
@@ -157,10 +166,27 @@ public class GalleryActivity extends Activity {
 		}
 
 	private void loadAllAndRecentImages(String name){
+		Collections.sort(entryList, new Comparator<Entry>() {
+			   public int compare(Entry o1, Entry o2) {
+				   
+			      Date a = o1.getDate();
+			      Date b = o2.getDate();
+			     if (a.after(b)) 
+			        return -1;
+			      else if (a.equals(b)) // it's equals
+			         return 0;
+			      else
+			         return 1;
+			   }
+			});
+		int count = 0;
 		Iterator<Entry> entry = entryList.iterator();
 		while(entry.hasNext()){
 			if(name == "recent"){
-				System.out.println(entry.next().getVotes());
+				if(count++ < 10){
+					System.out.println(entry.next().getVotes());
+				}
+				
 			}
 			else{
 				System.out.println(entry.next().getId());

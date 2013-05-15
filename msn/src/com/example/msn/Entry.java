@@ -1,5 +1,7 @@
 package com.example.msn;
 
+import java.util.Date;
+
 import android.graphics.Bitmap;
 
 public class Entry {
@@ -9,8 +11,15 @@ public class Entry {
 	Bitmap bmp;
 	String caption;
 	int votes;
+	Date date;
 
 	
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	public Bitmap getBmp() {
 		return bmp;
 	}

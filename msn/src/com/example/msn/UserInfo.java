@@ -90,7 +90,7 @@ public class UserInfo {
 		System.out.println(getFb_id());
 		System.out.println(getUsername());
 		System.out.println(getFirstName());
-		System.out.println(getMiddle_name());
+		//System.out.println(getMiddle_name());
 		System.out.println(getLast_name());
 		System.out.println(getGender());
 	}
