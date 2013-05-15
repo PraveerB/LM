@@ -22,7 +22,8 @@ public class MainActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         participateBtn = (ImageView) findViewById(R.id.participateBtn);
-        connectToFacebook();
+        ConnectionHelper con = new ConnectionHelper();
+        con.connectToFacebook(this);
         participateBtn.setOnClickListener(new OnClickListener() {
         	@Override
 			public void onClick(View arg0) {
@@ -40,34 +41,5 @@ public class MainActivity extends Activity  {
         return true;
     }
     
-    private void connectToFacebook(){
-		Session.openActiveSession(this, true, new Session.StatusCallback() {
-			  
-		      // callback when session changes state
-		      @Override 	
-		      public void call(Session session, SessionState state, Exception exception) {
-		        if (session.isOpened()) {
-		          // make request to the /me API
-		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-		        	 
-		            // callback after Graph API response with user object
-		            @Override
-		            public void onCompleted(GraphUser user, Response response) {
-		              if (user != null) {
-		                //TextView welcome = (TextView) findViewById(R.id.welcome);
-		                //welcome.setText("Hello " + user.getId() + "!");
-		                UserInfo.setFb_id(user.getId());
-		                System.out.println("UserInfo ::: "+UserInfo.getFb_id());
-		                //welcome.setText(user.toString());
-		              }
-		            }
-		          });
-		        }
-		        else{
-		        	//call(session, state, exception);
-		        }
-		      }
-		    });	
-
-    }
+    
 }
