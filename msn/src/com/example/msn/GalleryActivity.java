@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -25,23 +26,33 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class GalleryActivity extends Activity {
 	ImageView userEntryImage;
 	LinearLayout gallerylayout;
+	ImageView userEntryImageView;
+	HorizontalScrollView scrollView;
+	ArrayList<Entry> entryList;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		gallerylayout = (LinearLayout) findViewById(R.id.galleryLayout);
 		System.out.println("executeMultipartPost()");
-		executeMultipartPost();
 		setContentView(R.layout.activity_gallery);
-		userEntryImage = (ImageView) findViewById(R.id.userEntryImage);
+		userEntryImage = (ImageView)findViewById(R.id.userEntryImage);
+		scrollView = (HorizontalScrollView) findViewById(R.id.galleryHorizontalScrollView);
+		entryList = new ArrayList<Entry>();
+		executeMultipartPost();
+		
 	}
 
 	@Override
@@ -51,7 +62,7 @@ public class GalleryActivity extends Activity {
 		return true;
 	}
 
-	public StringBuilder executeMultipartPost(){
+	public void executeMultipartPost(){
 		 StringBuilder json_response = new StringBuilder();
 			try {
 				StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -69,13 +80,21 @@ public class GalleryActivity extends Activity {
 				HttpResponse response = httpClient.execute(postRequest);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"UTF-8"));
 				String sResponse;
+				
 				while ((sResponse = reader.readLine()) != null) {
-					System.out.println(sResponse);
+					//System.out.println(sResponse);
 					json_response = json_response.append(sResponse);
 				}
+				 LinearLayout topLinearLayout = new LinearLayout(this);
+				 topLinearLayout.setOrientation(LinearLayout.HORIZONTAL); 
 				JSONArray jsonArray = new JSONArray(json_response.toString());
 				for (int i = 0; i < jsonArray.length(); i++) {
+						URL url;
+						final ImageView imageView = new ImageView (this);
+			            //imageView.setTag(i);
 						JSONObject joObject = jsonArray.getJSONObject(i);
+
+						/*
 						String image_url = "https://msncontest-fb.azurewebsites.net/uploads/" + joObject.get("image_location").toString();
 						//URL url = new URL(image_url);
 						//URI uri = url.toURI();
@@ -84,32 +103,50 @@ public class GalleryActivity extends Activity {
 						//System.out.println(getImageBitmap(image_url));
 						//userEntryImage.setImageBitmap(BitmapFactory.decodeStream((InputStream)new URL(image_url).getContent()));
 						//userEntryImage.setImageResource(R.id.participateBtn);
-						break;
+						break;*/
+
+						Entry entry = new Entry();
+						
+						entry.setId(Integer.parseInt(joObject.get("id").toString()));
+						entry.setVotes(Integer.parseInt(joObject.get("votes").toString()));
+						entry.setCaption(joObject.get("caption").toString());
+						entry.setImage_location(joObject.get("image_location").toString());
+						//entry.setName(joObject.get("fb_user_id").toString());
+						entryList.add(entry);
+						//String image_url = "https://msncontest-fb.azurewebsites.net/uploads/" + joObject.get("image_location").toString();
+						String image_url  = "https://apps51.likemyworld.com/ChaddiBuddy/app/assets/images/btn-gallery2.png";
+						//String image_url  = entry.getImage_location();
+						imageView.setId(i);
+						//System.out.println("userEntryImage" +imageView);
+						imageView.setTag(image_url);
+						
+						new LoadImageFromInternetTask().execute(imageView);
+						
+						//userEntryImage.setTag(image_url);
+						imageView.setOnClickListener(new OnClickListener()
+			            {
+
+			                @Override
+			                public void onClick(View v)
+			                {
+			                    // TODO Auto-generated method stub
+			                	System.out.println("Onclick---------");
+			                	//new LoadImageFromInternetTask().execute(userEntryImage);
+			                	//userEntryImage.
+			                    Log.e("Tag",""+imageView.getTag());
+			                }
+			            });
+						
+						topLinearLayout.addView(imageView);
 					}
+				
+				scrollView.addView(topLinearLayout);
+				System.out.println("Out.........");
+				new LoadImageFromInternetTask().execute(userEntryImage);
 			} catch (Exception e) {
 				System.out.println("Exception");
-				// handle exception here
 				e.printStackTrace();
-				// Log.e(e.getClass().getName(), e.getMessage());
 			}
-			return json_response;
+			//return json_response;
 		}
-	
-		private Bitmap getImageBitmap(String url) {
-	        Bitmap bm = null;
-	        try {
-	            URL aURL = new URL(url);
-	            URLConnection conn = aURL.openConnection();
-	            conn.connect();
-	            InputStream is = conn.getInputStream();
-	            BufferedInputStream bis = new BufferedInputStream(is);
-	            bm = BitmapFactory.decodeStream(bis);
-	            bis.close();
-	            is.close();
-	       } catch (IOException e) {
-	           //Log.e("Error getting bitmap", e);
-	       }
-	       return bm;
-	    } 
-	
 }

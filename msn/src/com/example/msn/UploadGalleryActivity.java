@@ -156,7 +156,13 @@ public class UploadGalleryActivity extends Activity {
 	            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 	            byte[] byteArray = stream.toByteArray();
 				
+	            System.out.println("Camera.........");
+				System.out.println(byteArray);
+	            System.out.println(UserInfo.getUploadedImage());
+	            
 				UserInfo.setUploadedImage(byteArray);
+	            System.out.println(UserInfo.getUploadedImage());
+
 				Intent captionIntent = new Intent("com.example.msn.CAPTION");
 				startActivity(captionIntent);
 			}

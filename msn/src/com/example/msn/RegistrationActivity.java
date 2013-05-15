@@ -40,6 +40,7 @@ public class RegistrationActivity extends Activity {
 				String uemail = email.getText().toString();
 				String ucity = city.getText().toString();
 				String ucontact = contact.getText().toString();
+				UserInfo userInfo = new UserInfo();
 				System.out.println(uname.length());
 				if(uname.length() == 0) {
 					toast = Toast.makeText(getBaseContext(), "Please Enter Name!!", 100);
@@ -66,10 +67,10 @@ public class RegistrationActivity extends Activity {
 					toast.show();
 				}
 				else {
-					UserInfo.setName(uname);
-					UserInfo.setEmail(uemail);
-					UserInfo.setCity(ucity);
-					UserInfo.setContact(ucontact);
+					userInfo.setName(uname);
+					userInfo.setEmail(uemail);
+					userInfo.setCity(ucity);
+					userInfo.setContact(ucontact);
 					Intent uploadIntent = new Intent("com.example.msn.UPLOADGALLERY");
 					startActivity(uploadIntent);
 				}
