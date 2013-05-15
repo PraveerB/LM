@@ -61,12 +61,11 @@ class ConnectionHelper {
 		            }
 		          });
 		        }
-	
 		      }
 		    });	
     }
 	String saveMobileUserInfo() {
-		StringBuilder s= new StringBuilder("test1");
+		StringBuilder s = new StringBuilder("test1");
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy); 

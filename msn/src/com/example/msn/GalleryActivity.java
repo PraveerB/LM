@@ -2,6 +2,7 @@ package com.example.msn;
 
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.Menu;
@@ -54,11 +58,6 @@ public class GalleryActivity extends Activity {
 		galleryHorizontalScrollViewRecent= (HorizontalScrollView)findViewById(R.id.galleryHorizontalScrollViewRecent);
 		entryList = new ArrayList<Entry>();
 		
-		topLinearLayoutAll = new LinearLayout(this);
-		topLinearLayoutAll.setOrientation(LinearLayout.HORIZONTAL); 
-		topLinearLayoutRecent= new LinearLayout(this);
-		topLinearLayoutRecent.setOrientation(LinearLayout.HORIZONTAL); 
-		
 		executeMultipartPost();
 		allEntry = (ImageView) findViewById(R.id.allImages);
 		
@@ -67,9 +66,12 @@ public class GalleryActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				galleryHorizontalScrollViewRecent.setVisibility(View.INVISIBLE);
+				scrollView.setVisibility(View.VISIBLE);
 				//allEntry.setImageResource(R.drawable.allentries_click);
 				//recentEntry.setImageResource(R.drawable.recententries);
 				//loadAllAndRecentImages("all");
+				
 			}
 		});
 		
@@ -77,6 +79,8 @@ public class GalleryActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				galleryHorizontalScrollViewRecent.setVisibility(View.VISIBLE);
+				scrollView.setVisibility(View.INVISIBLE);
 				//allEntry.setImageResource(R.drawable.allentries);
 				//recentEntry.setImageResource(R.drawable.recententries_click);
 				//loadAllAndRecentImages("recent");
@@ -110,10 +114,10 @@ public class GalleryActivity extends Activity {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"UTF-8"));
 				String sResponse;
 				
-				/*topLinearLayoutAll = new LinearLayout(this);
+				topLinearLayoutAll = new LinearLayout(this);
 				topLinearLayoutAll.setOrientation(LinearLayout.HORIZONTAL); 
 				topLinearLayoutRecent= new LinearLayout(this);
-				topLinearLayoutRecent.setOrientation(LinearLayout.HORIZONTAL); */
+				topLinearLayoutRecent.setOrientation(LinearLayout.HORIZONTAL); 
 				
 				while ((sResponse = reader.readLine()) != null) {
 					json_response = json_response.append(sResponse);
@@ -166,27 +170,31 @@ public class GalleryActivity extends Activity {
 			                    //Log.e("Tag",""+imageView.getTag());
 			                }
 			            });
-						/*if(i<5){
-							topLinearLayoutRecent.addView(imageView);
-							ImageView n =new ImageView();
-							n.setImageBitmap(imageView)
+						if(i<5){
+							ImageView recentImg =new ImageView(this);
+							ByteArrayOutputStream bos = new ByteArrayOutputStream();
+							BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();;
+							Bitmap bitmap = drawable.getBitmap();
+							bitmap.compress(CompressFormat.JPEG, 50, bos);
+							recentImg.setImageBitmap(bitmap);
+							topLinearLayoutRecent.addView(recentImg);
 							topLinearLayoutAll.addView(imageView);
 						}
 						else{
 							topLinearLayoutAll.addView(imageView);
-						}*/
-						topLinearLayoutAll.addView(imageView);
+						}
+						
 					}
 				scrollView.addView(topLinearLayoutAll);
-				//galleryHorizontalScrollViewRecent.addView(topLinearLayoutRecent);
+				galleryHorizontalScrollViewRecent.addView(topLinearLayoutRecent);
 			} catch (Exception e) {
 				System.out.println("Exception");
 				e.printStackTrace();
 			}
 		}
 
-	private void loadAllAndRecentImages(String name){
-		/*Collections.sort(entryList, new Comparator<Entry>() {
+/*	private void loadAllAndRecentImages(String name){
+		Collections.sort(entryList, new Comparator<Entry>() {
 			   public int compare(Entry o1, Entry o2) {
 				   
 			      Date a = o1.getDate();
@@ -198,18 +206,17 @@ public class GalleryActivity extends Activity {
 			      else
 			         return 1;
 			   }
-			});*/
+			});
 		int count = 0;
 		Iterator<Entry> entry = entryList.iterator();
-		//scrollView.removeAllViewsInLayout();
-		//topLinearLayoutAll.removeViews(5, 10);
-		scrollView.removeViewAt(0);
-		/*if(name == "recent"){
+		scrollView.removeAllViewsInLayout();
+		topLinearLayout.removeAllViewsInLayout();
+		if(name == "recent"){
 			while(entry.hasNext()){
 				if(count++ < 5) {
 					final ImageView imageView = new ImageView (this);
 					imageView.setImageBitmap(entry.next().getBmp());
-					topLinearLayoutAll.addView(imageView);
+					topLinearLayout.addView(imageView);
 				}
 			}
 			
@@ -218,10 +225,10 @@ public class GalleryActivity extends Activity {
 			while(entry.hasNext()){
 				final ImageView imageView = new ImageView (this);
 				imageView.setImageBitmap(entry.next().getBmp());
-				topLinearLayoutAll.addView(imageView);
+				topLinearLayout.addView(imageView);
 			}
 			//scrollView.addView(topLinearLayout);
-		}*/
-		//scrollView.addView(topLinearLayoutAll);
-	}
+		}
+		scrollView.addView(topLinearLayout);
+	}*/
 }
