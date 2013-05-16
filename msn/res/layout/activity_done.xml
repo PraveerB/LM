@@ -20,9 +20,10 @@
 
     <ImageView
         android:id="@+id/uploadedImagePreviewDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="47dp"/>
+        android:layout_width="250dp"
+        android:layout_height="163dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+         />
 
 </RelativeLayout>

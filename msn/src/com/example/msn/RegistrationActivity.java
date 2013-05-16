@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class RegistrationActivity extends Activity {
@@ -24,11 +25,19 @@ public class RegistrationActivity extends Activity {
 	EditText email;
 	EditText city;
 	EditText contact;
+	ProgressBar wait;
 	Toast toast;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration);
+		if(UserInfo.getEmail()!= null){
+			System.out.println(UserInfo.getEmail());
+		}
+		else{
+			System.out.println("NULL.....");
+		}
+		
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
 			  
 		      // callback when session changes state
@@ -46,11 +55,11 @@ public class RegistrationActivity extends Activity {
 		                //welcome.setText("Hello " + user.getId() + "!");
 		            	System.out.println("inside not null");
 		                UserInfo.setFb_id(user.getId());
-		                UserInfo.setFirst_name(user.getFirstName());
+		                UserInfo.setFirstName(user.getFirstName());
 		                if(user.getMiddleName() != null)
-		                	UserInfo.setMiddle_name(user.getMiddleName());
+		                	UserInfo.setMiddleName(user.getMiddleName());
 		                if(user.getLastName() != null)
-		                	UserInfo.setLast_name(user.getLastName());
+		                	UserInfo.setLastName(user.getLastName());
 		                if(user.getProperty("gender") != null)
 		                	UserInfo.setGender((String) user.getProperty("gender"));
 		                if(user.getUsername() != null)
@@ -61,16 +70,33 @@ public class RegistrationActivity extends Activity {
 		                //welcome.setText(user.toString());
 		                ConnectionHelper con = new ConnectionHelper();
 		                String res = con.saveMobileUserInfo();
-		                if(UserInfo.getFb_id() != null) { 
-		                	Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
-		                	startActivity(uploadGalleryIntent);
+		                System.out.println(res);
+		                if(UserInfo.getFb_id() != null) {
+		                	//String con.checkNew();
+		                	if((!res.equals("new"))) {
+		                		Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
+			                	startActivity(uploadGalleryIntent);
+		                	}
 		                }
+		                else {
+		                	Toast.makeText(getBaseContext(), "Something bad happened!!", Toast.LENGTH_SHORT);
+		                	Intent participate = new Intent("com.example.msn.MAIN");
+			            	startActivity(participate);
+		                }
+		                
+		              }
+		              else {
+		            	  Toast.makeText(getBaseContext(), "Something bad happened!!", Toast.LENGTH_SHORT);
+		            	  Intent participate = new Intent("com.example.msn.MAIN");
+		            	  startActivity(participate);
+		            	  
 		              }
 		            }
 		          });
 		        }
 		      }
 		    });	
+		
 		submitBtn = (ImageView) findViewById(R.id.submit1);
 		name = (EditText) findViewById(R.id.name);
 		city = (EditText) findViewById(R.id.city);
@@ -115,6 +141,7 @@ public class RegistrationActivity extends Activity {
 				else {
 					UserInfo.setName(uname);
 					UserInfo.setEmail(uemail);
+					System.out.println(UserInfo.getEmail());
 					UserInfo.setCity(ucity);
 					UserInfo.setContact(ucontact);
 					Intent uploadIntent = new Intent("com.example.msn.UPLOADGALLERY");

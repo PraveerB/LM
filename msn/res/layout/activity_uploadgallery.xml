@@ -32,15 +32,6 @@
         android:clickable="true"
         android:src="@drawable/upload" />
 
-    <TextView
-        android:id="@+id/welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/whitebg"
-        android:layout_below="@+id/whitebg"
-        android:layout_marginTop="32dp"
-        android:text="TextView" />
-    
     
 <RelativeLayout
     android:id="@+id/popupLayout"

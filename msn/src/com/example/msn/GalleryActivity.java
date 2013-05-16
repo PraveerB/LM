@@ -67,7 +67,7 @@ public class GalleryActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				String hiddenString = hiddenIndex.getText().toString();
+				String hiddenString = (hiddenIndex.getText()).toString();
 				System.out.println(hiddenString);
 				Entry entry1 = null ;
 				Iterator<Entry > ir = entryList.iterator();
@@ -90,6 +90,15 @@ public class GalleryActivity extends Activity {
 				Toast.makeText(getBaseContext(), res, Toast.LENGTH_SHORT).show();
 			}
 		});
+		fshareBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		entryList = new ArrayList<Entry>();
 		
 		executeMultipartPost();
@@ -165,6 +174,7 @@ public class GalleryActivity extends Activity {
 				firstImg.put(null, userEntryImage);
 				userCaption.setText(jsonArray.getJSONObject(0).getString("caption"));
 				voteCount.setText(jsonArray.getJSONObject(0).getString("votes"));
+				hiddenIndex.setText(((Integer)(jsonArray.getJSONObject(0).getInt("id"))).toString());
             	new LoadImageFromInternetTask().execute(firstImg);
             	
 				for (i = 0; i < jsonArray.length(); i++) {
@@ -234,23 +244,15 @@ public class GalleryActivity extends Activity {
 								}
 							});
 							
-							
-							/*ByteArrayOutputStream bos = new ByteArrayOutputStream();
-							BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-							Bitmap bitmap = drawable.getBitmap();
-							bitmap.compress(CompressFormat.JPEG, 50, bos);
-							recentImg.setImageBitmap(bitmap);*/
-
-							
 							topLinearLayoutRecent.addView(recentImg);
 							topLinearLayoutAll.addView(imageView);
-							recentImg.getLayoutParams().width = 100;
+							recentImg.getLayoutParams().width = 120;
 							recentImg.getLayoutParams().height = 40;
 						}
 						else{
 							topLinearLayoutAll.addView(imageView);
 						}
-						imageView.getLayoutParams().width = 100;
+						imageView.getLayoutParams().width = 120;
 						imageView.getLayoutParams().height = 40;
 						
 						
@@ -263,42 +265,4 @@ public class GalleryActivity extends Activity {
 			}
 		}
 
-/*	private void loadAllAndRecentImages(String name){
-		Collections.sort(entryList, new Comparator<Entry>() {
-			   public int compare(Entry o1, Entry o2) {
-				   
-			      Date a = o1.getDate();
-			      Date b = o2.getDate();
-			     if (a.after(b)) 
-			        return -1;
-			      else if (a.equals(b)) // it's equals
-			         return 0;
-			      else
-			         return 1;
-			   }
-			});
-		int count = 0;
-		Iterator<Entry> entry = entryList.iterator();
-		scrollView.removeAllViewsInLayout();
-		topLinearLayout.removeAllViewsInLayout();
-		if(name == "recent"){
-			while(entry.hasNext()){
-				if(count++ < 5) {
-					final ImageView imageView = new ImageView (this);
-					imageView.setImageBitmap(entry.next().getBmp());
-					topLinearLayout.addView(imageView);
-				}
-			}
-			
-		}
-		else{
-			while(entry.hasNext()){
-				final ImageView imageView = new ImageView (this);
-				imageView.setImageBitmap(entry.next().getBmp());
-				topLinearLayout.addView(imageView);
-			}
-			//scrollView.addView(topLinearLayout);
-		}
-		scrollView.addView(topLinearLayout);
-	}*/
 }

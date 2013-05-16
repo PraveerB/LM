@@ -34,19 +34,19 @@
         android:ems="9" />
 
     <ImageView
-        android:id="@+id/uploadedImageCaption"
-        android:layout_width="245dp"
-        android:layout_height="160dp"
-        android:layout_alignLeft="@+id/caption"
-        android:layout_centerVertical="true"
-        android:src="@drawable/whitebg" />
-
-    <ImageView
         android:id="@+id/changeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/uploadedImageCaption"
         android:layout_toLeftOf="@+id/uploadedImagePreview"
         android:src="@drawable/change" />
+
+    <ImageView
+        android:id="@+id/uploadedImageCaption"
+        android:layout_width="250dp"
+        android:layout_height="160dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="27dp"
+        android:src="@drawable/whitebg" />
 
 </RelativeLayout>
