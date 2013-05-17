@@ -28,4 +28,13 @@
         android:scaleType="fitXY" >
     </ImageView>
 
+    <ImageView
+        android:id="@+id/galleryFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/participateBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="57dp"
+        android:src="@drawable/gallery" />
+
 </RelativeLayout>

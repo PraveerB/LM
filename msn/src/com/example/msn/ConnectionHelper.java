@@ -16,6 +16,9 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.StrictMode;
 
 import com.facebook.Request;
@@ -276,5 +279,22 @@ class ConnectionHelper {
 	}
 	*/
 	
+	public boolean isNetworkConnected(Context con) {
+		/*int i = 0;
+		if(i %2 ==  0){
+			i++;
+			return true;
+		}
+		else{
+			return false;
+		}*/
+		ConnectivityManager cm = (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo ni = cm.getActiveNetworkInfo();
+		  if (ni == null) {
+		   // There are no active networks.
+		   return false;
+		  } else
+		   return true;
+		 }
 	
 }
