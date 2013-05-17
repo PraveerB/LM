@@ -65,6 +65,11 @@ public class GalleryActivity extends Activity {
 	ImageView likeBtn;
 	ImageView fshareBtn;
 	TextView hiddenIndex;
+	ImageView forward;
+	ImageView backward;
+	boolean flag = false;
+	int layoutRecentWidth;
+	int layoutAllWidth;
 	int i;
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -79,6 +84,52 @@ public class GalleryActivity extends Activity {
 		userEntryImage = (ImageView)findViewById(R.id.userEntryImage);
 		scrollView = (HorizontalScrollView) findViewById(R.id.galleryHorizontalScrollView);
 		galleryHorizontalScrollViewRecent= (HorizontalScrollView)findViewById(R.id.galleryHorizontalScrollViewRecent);
+		forward = (ImageView) findViewById(R.id.forward);
+		backward = (ImageView) findViewById(R.id.backward);
+		forward.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if(flag) {
+
+					layoutRecentWidth = topLinearLayoutRecent.getWidth();
+					int currentPosX = galleryHorizontalScrollViewRecent.getScrollX();
+					int currentPosY = galleryHorizontalScrollViewRecent.getScrollY();
+					if(currentPosX < (layoutRecentWidth-40)) {
+						galleryHorizontalScrollViewRecent.scrollTo((currentPosX+10), currentPosY);
+					}
+				} else {
+					layoutAllWidth = topLinearLayoutAll.getWidth();
+					int currentPosX = scrollView.getScrollX();
+					int currentPosY = scrollView.getScrollY();
+					if(currentPosX < (layoutAllWidth-40)) {
+						scrollView.scrollTo((currentPosX+40), currentPosY);
+					}
+				}
+			}
+		});
+		backward.setOnClickListener(new OnClickListener(
+				) {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(flag) {
+					int currentPosX = galleryHorizontalScrollViewRecent.getScrollX();
+					int currentPosY = galleryHorizontalScrollViewRecent.getScrollY();
+					if(currentPosX > 40) {
+						galleryHorizontalScrollViewRecent.scrollTo((currentPosX-10), currentPosY);
+					}
+				} else {
+					int currentPosX = scrollView.getScrollX();
+					int currentPosY = scrollView.getScrollY();
+					if(currentPosX > 40) {
+						scrollView.scrollTo((currentPosX-40), currentPosY);
+					}
+				}
+			}
+		});
 		likeBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -130,6 +181,7 @@ public class GalleryActivity extends Activity {
 				allEntry.setImageResource(R.drawable.recententries);
 				recentEntry.setImageResource(R.drawable.allentries_click);
 				//loadAllAndRecentImages("all");
+				flag = true;
 				
 			}
 		});
@@ -143,6 +195,7 @@ public class GalleryActivity extends Activity {
 				allEntry.setImageResource(R.drawable.recententries_click);
 				recentEntry.setImageResource(R.drawable.allentries);
 				//loadAllAndRecentImages("recent");
+				flag = false;
 			}
 		});
 	}

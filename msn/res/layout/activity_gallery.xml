@@ -103,5 +103,21 @@
         android:layout_alignTop="@+id/voteCount"
         android:layout_marginLeft="20dp"
         android:src="@drawable/like" />
+
+    <ImageView
+        android:id="@+id/forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/galleryHorizontalScrollView"
+        android:src="@drawable/arrow1" />
+
+    <ImageView
+        android:id="@+id/backward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/galleryHorizontalScrollView"
+        android:src="@drawable/arrow2" />
     
 </RelativeLayout>
