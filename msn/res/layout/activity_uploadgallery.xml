@@ -69,7 +69,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/phonegallery"
         android:layout_centerVertical="true"
-        android:src="@drawable/facebookgallery" />
+        android:src="@drawable/facebookgallery"
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/camera"

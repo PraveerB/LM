@@ -1,3 +1,4 @@
+
 package com.example.msn;
 
 
@@ -12,8 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import com.facebook.Session;
-import com.facebook.Request;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -27,9 +27,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
+
+import android.support.v4.util.LruCache;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +44,7 @@ import android.widget.Toast;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.HttpMethod;
+import com.facebook.Request;
 import com.facebook.RequestAsyncTask;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -50,7 +54,6 @@ public class GalleryActivity extends Activity {
     private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
     private boolean pendingPublishReauthorization = false;
 	ImageView userEntryImage;
-	//LinearLayout gallerylayout;
 	ImageView userEntryImageView;
 	HorizontalScrollView scrollView;
 	HorizontalScrollView galleryHorizontalScrollViewRecent;
@@ -74,7 +77,6 @@ public class GalleryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		System.out.println("executeMultipartPost()");
 		setContentView(R.layout.activity_gallery);
 		hiddenIndex = (TextView) findViewById(R.id.hiddenIndex);
 		likeBtn = (ImageView) findViewById(R.id.likeBtn);
@@ -84,7 +86,7 @@ public class GalleryActivity extends Activity {
 		userEntryImage = (ImageView)findViewById(R.id.userEntryImage);
 		scrollView = (HorizontalScrollView) findViewById(R.id.galleryHorizontalScrollView);
 		galleryHorizontalScrollViewRecent= (HorizontalScrollView)findViewById(R.id.galleryHorizontalScrollViewRecent);
-		forward = (ImageView) findViewById(R.id.forward);
+forward = (ImageView) findViewById(R.id.forward);
 		backward = (ImageView) findViewById(R.id.backward);
 		forward.setOnClickListener(new OnClickListener() {
 			
@@ -131,11 +133,10 @@ public class GalleryActivity extends Activity {
 			}
 		});
 		likeBtn.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View arg0) {
 				String hiddenString = (hiddenIndex.getText()).toString();
-				System.out.println(hiddenString);
+				//System.out.println(hiddenString);
 				Entry entry1 = null ;
 				Iterator<Entry > ir = entryList.iterator();
 				while(ir.hasNext()){
@@ -153,7 +154,6 @@ public class GalleryActivity extends Activity {
 					voteCount.setText(((Integer)newVotes).toString());
 					entry1.setVotes(newVotes);
 				}
-				System.out.println(res);
 				Toast.makeText(getBaseContext(), res, Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -168,7 +168,48 @@ public class GalleryActivity extends Activity {
 		
 		entryList = new ArrayList<Entry>();
 		
-		executeMultipartPost();
+		ConnectionHelper con = new ConnectionHelper();
+		System.out.println("isNetworkConnected::: "+con.isNetworkConnected(getBaseContext()));
+		if(con.isNetworkConnected(getBaseContext()) ){
+			System.out.println("net connected...");
+			executeMultipartPost();
+		}
+		else{
+			System.out.println("net not connected...");
+			Toast.makeText(getBaseContext(), "No Network...", Toast.LENGTH_SHORT).show();
+			LoadImageFromInternetTask cacheElements = new LoadImageFromInternetTask();
+			/*Map<String , Entry> m = (Map<String, Entry>) cacheElements.getAllBitmapFromMemCache();
+			
+			Map.Entry map = (java.util.Map.Entry) m.entrySet().iterator();
+			while(){
+				
+			}*/
+			if(cacheElements.getAllBitmapFromMemCache()!= null){
+				Toast.makeText(getBaseContext(), cacheElements.getAllBitmapFromMemCache().get("1").getCaption(), Toast.LENGTH_SHORT).show();
+				if(cacheElements.getAllBitmapFromMemCache().get("1")!= null){
+					ImageView im = new ImageView(this);
+					im.setImageBitmap((cacheElements.getAllBitmapFromMemCache()).get("1").getBmp());
+					userCaption.setText((cacheElements.getAllBitmapFromMemCache()).get("1").getCaption());
+					//voteCount.setText(((cacheElements.getAllBitmapFromMemCache()).get("1").getVotes()).toString());
+					//topLinearLayoutAll.addView(im);
+					//im.getLayoutParams().width = 120;
+					//im.getLayoutParams().height = 40;
+					//scrollView.addView(topLinearLayoutAll);
+
+				}
+				
+			}
+			else{
+				//Intent i = new Intent("android.intent.action.MAIN");
+				//startActivity(i);
+				Toast.makeText(getBaseContext(), "Connect to network", Toast.LENGTH_SHORT).show();
+			}
+			//(cacheElements.getAllBitmapFromMemCache()).get("251");
+			
+			//System.out.println("Lru cache :::"+cacheElements.getAllBitmapFromMemCache());
+		}
+		
+		
 		allEntry = (ImageView) findViewById(R.id.allImages);
 		
 		recentEntry = (ImageView) findViewById(R.id.recentImages);
@@ -181,7 +222,6 @@ public class GalleryActivity extends Activity {
 				allEntry.setImageResource(R.drawable.recententries);
 				recentEntry.setImageResource(R.drawable.allentries_click);
 				//loadAllAndRecentImages("all");
-				flag = true;
 				
 			}
 		});
@@ -195,7 +235,6 @@ public class GalleryActivity extends Activity {
 				allEntry.setImageResource(R.drawable.recententries_click);
 				recentEntry.setImageResource(R.drawable.allentries);
 				//loadAllAndRecentImages("recent");
-				flag = false;
 			}
 		});
 	}
@@ -286,7 +325,7 @@ public class GalleryActivity extends Activity {
 								voteCount.setText(((Integer)entry.getVotes()).toString());
 								hiddenIndex.setText(((Integer)(entry.getId())).toString());
 								
-								System.out.println("hiddenIndex Click ::: "+hiddenIndex.getText());
+								//System.out.println("hiddenIndex Click ::: "+hiddenIndex.getText());
 								
 			                    //Log.e("Tag",""+imageView.getTag());
 			                }
