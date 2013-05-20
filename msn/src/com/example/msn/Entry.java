@@ -1,14 +1,22 @@
 package com.example.msn;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
-public class Entry {
+public class Entry implements Serializable {
 	
 	int id;
 	String image_location;
-	Bitmap bmp;
+	byte[] bmp;
 	String caption;
 	int votes;
 	Date date;
@@ -20,10 +28,10 @@ public class Entry {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Bitmap getBmp() {
+	public byte[] getBmp() {
 		return bmp;
 	}
-	public void setBmp(Bitmap bmp) {
+	public void setBmp(byte[] bmp) {
 		this.bmp = bmp;
 	}
 	public int getVotes() {
@@ -51,4 +59,33 @@ public class Entry {
 		this.caption = caption;
 	}
 	
+	
+	public void serialize(Context context,  String fileNaqme , ArrayList<Entry> entries)
+	{
+	   FileOutputStream str = null;
+	   ObjectOutputStream objStr = null;
+	   try {
+	     str = context.openFileOutput(fileNaqme, Context.MODE_PRIVATE);
+	     objStr = new ObjectOutputStream(str);
+
+	     objStr.writeObject(entries);
+
+	    } catch (FileNotFoundException e)
+	    {
+	        e.printStackTrace();
+	    } catch (IOException e)
+	    {
+	        e.printStackTrace();
+	    } finally
+	    {
+	        try
+	        {
+	            if (objStr != null) objStr.close();
+	        } catch (IOException e) {}
+	        try
+	        {
+	           if (str != null) str.close();
+	        } catch (IOException e) {}
+	    }
+	}	
 }

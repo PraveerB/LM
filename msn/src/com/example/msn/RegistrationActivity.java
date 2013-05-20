@@ -31,12 +31,6 @@ public class RegistrationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration);
-		if(UserInfo.getEmail()!= null){
-			System.out.println(UserInfo.getEmail());
-		}
-		else{
-			System.out.println("NULL.....");
-		}
 		
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
 			  
@@ -53,7 +47,7 @@ public class RegistrationActivity extends Activity {
 		              if (user != null) {
 		                //TextView welcome = (TextView) findViewById(R.id.welcome);
 		                //welcome.setText("Hello " + user.getId() + "!");
-		            	System.out.println("inside not null");
+		            	//System.out.println("inside not null");
 		                UserInfo.setFb_id(user.getId());
 		                UserInfo.setFirstName(user.getFirstName());
 		                if(user.getMiddleName() != null)

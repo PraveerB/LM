@@ -1,5 +1,6 @@
 package com.example.msn;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,13 +33,21 @@ public class LoadImageFromInternetTask extends AsyncTask<HashMap<Entry, ImageVie
     @Override
     protected void onPostExecute(Bitmap result) {
         imageView.setImageBitmap(result);
-        //String url = (String) imageView.getTag();
-        //System.out.println("result:: "+result);
         if(entry != null){
-        	entry.setBmp(result);
+        	if(result !=null){
+	            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+	            boolean success = result.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+	            
+	            if(success){
+	            	entry.setBmp(byteStream.toByteArray());
+	            }
+	        }
+        	//entry.serialize(GalleryActivity.applicationContex, "entries");
         }
-        //System.out.println("cacheKey"+ Integer.toString(cacheKey++));
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        
+        
+        
+       /* final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         // Use 1/8th of the available memory for this memory cache.
         final int cacheSize = maxMemory / 8;
 
@@ -53,7 +62,7 @@ public class LoadImageFromInternetTask extends AsyncTask<HashMap<Entry, ImageVie
         if(entry!= null){
         	addBitmapToMemoryCache(Integer.toString(cacheKey++), entry);
             //System.out.println("getAllBitmapFromMemCache:::::" + getAllBitmapFromMemCache().get(Integer.toString(entry.getId())).getId());
-        }
+        }*/
         
     }
 
@@ -82,6 +91,7 @@ public class LoadImageFromInternetTask extends AsyncTask<HashMap<Entry, ImageVie
         catch(Exception e){}
         return bmp;
     }
+    
     
 //Save In Cache
     

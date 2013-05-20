@@ -1,8 +1,9 @@
 package com.example.msn;
 
-
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -27,11 +27,10 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
-
-import android.support.v4.util.LruCache;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +51,7 @@ public class GalleryActivity extends Activity {
     private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
     private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
     private boolean pendingPublishReauthorization = false;
+    public static Context applicationContex;
 	ImageView userEntryImage;
 	ImageView userEntryImageView;
 	HorizontalScrollView scrollView;
@@ -67,11 +67,16 @@ public class GalleryActivity extends Activity {
 	ImageView likeBtn;
 	ImageView fshareBtn;
 	TextView hiddenIndex;
+	ConnectionHelper con = null;
+	boolean isNetConnected; 
 	int i;
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		con = new ConnectionHelper();
 		setContentView(R.layout.activity_gallery);
+		applicationContex = getBaseContext();
+		isNetConnected= con.isNetworkConnected(applicationContex);
 		hiddenIndex = (TextView) findViewById(R.id.hiddenIndex);
 		likeBtn = (ImageView) findViewById(R.id.likeBtn);
 		fshareBtn = (ImageView) findViewById(R.id.fshareBtn);
@@ -80,86 +85,131 @@ public class GalleryActivity extends Activity {
 		userEntryImage = (ImageView)findViewById(R.id.userEntryImage);
 		scrollView = (HorizontalScrollView) findViewById(R.id.galleryHorizontalScrollView);
 		galleryHorizontalScrollViewRecent= (HorizontalScrollView)findViewById(R.id.galleryHorizontalScrollViewRecent);
+		
 		likeBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				String hiddenString = (hiddenIndex.getText()).toString();
-				//System.out.println(hiddenString);
-				Entry entry1 = null ;
-				Iterator<Entry > ir = entryList.iterator();
-				while(ir.hasNext()){
-					if(ir.next().getId() == Integer.parseInt(hiddenString)){
-						entry1 = ir.next();
-						break;
+				if(isNetConnected){
+					String hiddenString = (hiddenIndex.getText()).toString();
+					//System.out.println(hiddenString);
+					Entry entry1 = null ;
+					Iterator<Entry > ir = entryList.iterator();
+					while(ir.hasNext()){
+						if(ir.next().getId() == Integer.parseInt(hiddenString)){
+							entry1 = ir.next();
+							break;
+						}
 					}
+					//ConnectionHelper con = new ConnectionHelper();
+					String res = con.updateVote(entry1.getId());
+					
+					if(res.equals("Thanks for your like.")) {
+						int newVotes = (Integer.parseInt(voteCount.getText().toString()) + 1);
+						voteCount.setText(((Integer)newVotes).toString());
+						entry1.setVotes(newVotes);
+					}
+					Toast.makeText(getBaseContext(), res, Toast.LENGTH_SHORT).show();
 				}
-				ConnectionHelper con = new ConnectionHelper();
-				
-				String res = con.updateVote(entry1.getId());
-				
-				if(res.equals("Thanks for your like.")) {
-					int newVotes = (Integer.parseInt(voteCount.getText().toString()) + 1);
-					voteCount.setText(((Integer)newVotes).toString());
-					entry1.setVotes(newVotes);
+				else{
+					Toast.makeText(getBaseContext(), "Connect to internet", Toast.LENGTH_SHORT).show();
 				}
-				Toast.makeText(getBaseContext(), res, Toast.LENGTH_SHORT).show();
+				
 			}
 		});
 		fshareBtn.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				publishStory(GalleryActivity.this);
+				if(isNetConnected){
+					publishStory(GalleryActivity.this);
+				}
+				else{
+					Toast.makeText(getBaseContext(), "Connect to internet", Toast.LENGTH_SHORT).show();
+				}
+				
 			}
 		});
-		
 		entryList = new ArrayList<Entry>();
 		
-		ConnectionHelper con = new ConnectionHelper();
-		System.out.println("isNetworkConnected::: "+con.isNetworkConnected(getBaseContext()));
-		if(con.isNetworkConnected(getBaseContext()) ){
-			System.out.println("net connected...");
+		//ConnectionHelper con = new ConnectionHelper();
+		if(con.isNetworkConnected(applicationContex)){
 			executeMultipartPost();
 		}
 		else{
 			System.out.println("net not connected...");
 			Toast.makeText(getBaseContext(), "No Network...", Toast.LENGTH_SHORT).show();
-			LoadImageFromInternetTask cacheElements = new LoadImageFromInternetTask();
-			/*Map<String , Entry> m = (Map<String, Entry>) cacheElements.getAllBitmapFromMemCache();
-			
-			Map.Entry map = (java.util.Map.Entry) m.entrySet().iterator();
-			while(){
+			try {
+		    	FileInputStream fis = applicationContex.openFileInput("Entries");
+		    	ObjectInputStream is = new ObjectInputStream(fis);
+		    	ArrayList<Entry> allEntries =  (ArrayList<Entry>) is.readObject();
+		    	System.out.println(allEntries.isEmpty());
+		    	//Toast.makeText(getBaseContext(), "AAA::  "+allEntries.get(0).getCaption(), Toast.LENGTH_SHORT).show();
+		    	Iterator<Entry> ir = allEntries.iterator();
+		    	topLinearLayoutAll = new LinearLayout(this);
+		    	topLinearLayoutAll.setOrientation(LinearLayout.HORIZONTAL);
+		    	topLinearLayoutRecent= new LinearLayout(this);
+				topLinearLayoutRecent.setOrientation(LinearLayout.HORIZONTAL);
+				byte [] firstImg = allEntries.get(0).getBmp();
 				
-			}*/
-			if(cacheElements.getAllBitmapFromMemCache()!= null){
-				Toast.makeText(getBaseContext(), cacheElements.getAllBitmapFromMemCache().get("1").getCaption(), Toast.LENGTH_SHORT).show();
-				if(cacheElements.getAllBitmapFromMemCache().get("1")!= null){
-					ImageView im = new ImageView(this);
-					im.setImageBitmap((cacheElements.getAllBitmapFromMemCache()).get("1").getBmp());
-					userCaption.setText((cacheElements.getAllBitmapFromMemCache()).get("1").getCaption());
-					//voteCount.setText(((cacheElements.getAllBitmapFromMemCache()).get("1").getVotes()).toString());
-					//topLinearLayoutAll.addView(im);
-					//im.getLayoutParams().width = 120;
-					//im.getLayoutParams().height = 40;
-					//scrollView.addView(topLinearLayoutAll);
-
+				if(allEntries.get(0) != null){
+					userEntryImage.setImageBitmap(BitmapFactory.decodeByteArray(firstImg  , 0, (firstImg.length)));
+			    	voteCount.setText(""+allEntries.get(0).getVotes());
+		    		userCaption.setText(allEntries.get(0).getCaption().toString());
 				}
+	    		int count = 0;
+		    	while(ir.hasNext()){
+		    		final ImageView imageView = new ImageView(this);
+		    		final Entry currentEntry = ir.next();
+		    		byte[] bmp1 = currentEntry.getBmp();
+		    		final Bitmap bmp;
+		    		if( currentEntry != null){
+		    			bmp = BitmapFactory.decodeByteArray(bmp1  , 0, ((bmp1.length)));
+		    			if(count++ < 5){
+		    				imageView.setImageBitmap(bmp);
+		    				ImageView recent = new ImageView(this);
+		    				recent.setImageBitmap(bmp);
+		    				topLinearLayoutRecent.addView(recent);
+		    				recent.setOnClickListener(new OnClickListener() {
+				                @Override
+				                public void onClick(View v)
+				                {
+				                	userEntryImage.setImageBitmap(bmp);
+									userCaption.setText(currentEntry.getCaption());
+									voteCount.setText(((Integer)currentEntry.getVotes()).toString());
+									hiddenIndex.setText(((Integer)(currentEntry.getId())).toString());
+				                }
+				            });
+		    			}
+		    			else{
+		    				imageView.setImageBitmap(bmp);
+		    			}
+			    		topLinearLayoutAll.addView(imageView);
+			    		imageView.setOnClickListener(new OnClickListener() {
+			                @Override
+			                public void onClick(View v)
+			                {
+			                	userEntryImage.setImageBitmap(bmp);
+								userCaption.setText(currentEntry.getCaption());
+								voteCount.setText(((Integer)currentEntry.getVotes()).toString());
+								hiddenIndex.setText(((Integer)(currentEntry.getId())).toString());
+			                }
+			            });
+		    		}
+		    	}
+		    	is.close();
+		    	scrollView.addView(topLinearLayoutAll);
+		    	galleryHorizontalScrollViewRecent.addView(topLinearLayoutRecent);
+		    }
+			catch (ArrayIndexOutOfBoundsException e) {
+				// TODO: handle exception
+				
 				
 			}
-			else{
-				//Intent i = new Intent("android.intent.action.MAIN");
-				//startActivity(i);
-				Toast.makeText(getBaseContext(), "Connect to network", Toast.LENGTH_SHORT).show();
-			}
-			//(cacheElements.getAllBitmapFromMemCache()).get("251");
-			
-			//System.out.println("Lru cache :::"+cacheElements.getAllBitmapFromMemCache());
+		      catch (Exception e) {
+		    	  //e.printStackTrace(); 
+		    	  
+		     }
 		}
-		
-		
 		allEntry = (ImageView) findViewById(R.id.allImages);
-		
 		recentEntry = (ImageView) findViewById(R.id.recentImages);
 		allEntry.setOnClickListener(new OnClickListener() {
 			@Override
@@ -169,11 +219,8 @@ public class GalleryActivity extends Activity {
 				scrollView.setVisibility(View.INVISIBLE);
 				allEntry.setImageResource(R.drawable.recententries);
 				recentEntry.setImageResource(R.drawable.allentries_click);
-				//loadAllAndRecentImages("all");
-				
 			}
 		});
-		
 		recentEntry.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -182,18 +229,15 @@ public class GalleryActivity extends Activity {
 				scrollView.setVisibility(View.VISIBLE);
 				allEntry.setImageResource(R.drawable.recententries_click);
 				recentEntry.setImageResource(R.drawable.allentries);
-				//loadAllAndRecentImages("recent");
 			}
 		});
 	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.gallery, menu);
 		return true;
 	}
-
 	public void executeMultipartPost(){
 		 StringBuilder json_response = new StringBuilder();
 			try {
@@ -202,7 +246,6 @@ public class GalleryActivity extends Activity {
 				
 				HttpClient httpClient = new DefaultHttpClient();
 				HttpPost postRequest = new HttpPost("https://msncontest-fb.azurewebsites.net/index.php/site/getGalleryData");
-				
 				int timeoutConnection = 60000;
 				HttpParams httpParameters = new BasicHttpParams();
 				HttpConnectionParams.setConnectionTimeout(httpParameters,timeoutConnection);
@@ -239,7 +282,6 @@ public class GalleryActivity extends Activity {
 						imageView.setId(i);
 						JSONObject joObject = jsonArray.getJSONObject(i);
 						final Entry entry = new Entry();
-
 						entry.setId(Integer.parseInt(joObject.get("id").toString()));
 						entry.setVotes(Integer.parseInt(joObject.get("votes").toString()));
 						entry.setCaption(joObject.get("caption").toString());
@@ -286,7 +328,6 @@ public class GalleryActivity extends Activity {
 		                	hm.put(null, recentImg);
 							new LoadImageFromInternetTask().execute(hm);
 							recentImg.setOnClickListener(new OnClickListener() {
-								
 								@Override
 								public void onClick(View v) {
 									HashMap<Entry, ImageView> hm = new HashMap<Entry, ImageView>();
@@ -299,7 +340,6 @@ public class GalleryActivity extends Activity {
 									hiddenIndex.setText(((Integer)(entry.getId())).toString());
 								}
 							});
-							
 							topLinearLayoutRecent.addView(recentImg);
 							topLinearLayoutAll.addView(imageView);
 							recentImg.getLayoutParams().width = 120;
@@ -310,8 +350,6 @@ public class GalleryActivity extends Activity {
 						}
 						imageView.getLayoutParams().width = 120;
 						imageView.getLayoutParams().height = 40;
-						
-						
 					}
 				scrollView.addView(topLinearLayoutAll);
 				galleryHorizontalScrollViewRecent.addView(topLinearLayoutRecent);
@@ -322,9 +360,7 @@ public class GalleryActivity extends Activity {
 		}
 	private void publishStory(final Activity activity) {
 	    Session session = Session.getActiveSession();
-
 	    if (session != null){
-
 	        // Check for publish permissions    
 	        List<String> permissions = session.getPermissions();
 	        if (!isSubsetOf(PERMISSIONS, permissions)) {
@@ -340,7 +376,6 @@ public class GalleryActivity extends Activity {
 	        postParams.putString("description", "The Facebook SDK for Android makes it easier and faster to develop Facebook integrated Android apps.");
 	        postParams.putString("link", "https://developers.facebook.com/android");
 	        postParams.putString("picture", "https://raw.github.com/fbsamples/ios-3.x-howtos/master/Images/iossdk_logo.png");
-
 	        Request.Callback callback= new Request.Callback() {
 	            public void onCompleted(Response response) {
 	                JSONObject graphResponse = response
@@ -366,11 +401,9 @@ public class GalleryActivity extends Activity {
 
 	        Request request = new Request(session, "me/feed", postParams, 
 	                              HttpMethod.POST, callback);
-
 	        RequestAsyncTask task = new RequestAsyncTask(request);
 	        task.execute();
 	    }
-
 	}
 	
 	private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
@@ -380,5 +413,18 @@ public class GalleryActivity extends Activity {
 	        }
 	    }
 	    return true;
+	}
+	
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		//Toast.makeText(getBaseContext(), "PAuse", Toast.LENGTH_SHORT).show();
+		//ConnectionHelper con  = new ConnectionHelper();
+		if(isNetConnected){
+			new Entry().serialize(applicationContex, "Entries", entryList);
+		}
+		
 	}
 }
