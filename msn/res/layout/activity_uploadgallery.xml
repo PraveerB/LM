@@ -32,19 +32,18 @@
         android:clickable="true"
         android:src="@drawable/upload" />
 
-    
 <RelativeLayout
     android:id="@+id/popupLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentRight="true"
-    android:layout_centerVertical="true"
+    android:layout_alignParentBottom="true"
+    android:layout_alignRight="@+id/uploadBtn"
     android:background="@drawable/popup_bg"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:visibility="visible" >
+    android:visibility="invisible" >
 
     <ImageView
         android:id="@+id/whitebg"
@@ -52,16 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:src="@drawable/whitebg" />
-
-    <ImageView
-        android:id="@+id/phonegallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/facebookSelectPhoto"
-        android:layout_alignRight="@+id/whitebg"
-        android:layout_marginBottom="14dp"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/phonegallery" />
 
     <ImageView
         android:id="@+id/facebookSelectPhoto"
@@ -73,23 +62,30 @@
         android:visibility="invisible" />
 
     <ImageView
-        android:id="@+id/camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/facebookSelectPhoto"
-        android:layout_below="@+id/facebookSelectPhoto"
-        android:layout_marginTop="14dp"
-        android:src="@drawable/cameragallery" />
-
-    <ImageView
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/phonegallery"
         android:layout_alignRight="@+id/whitebg"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/close" />
 
-    
+    <ImageView
+        android:id="@+id/phonegallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/facebookSelectPhoto"
+        android:layout_alignRight="@+id/whitebg"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/phonegallery" />
+
+    <ImageView
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/facebookSelectPhoto"
+        android:layout_below="@+id/facebookSelectPhoto"
+        android:src="@drawable/cameragallery" />
 
 </RelativeLayout>
 

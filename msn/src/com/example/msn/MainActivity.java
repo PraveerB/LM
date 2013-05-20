@@ -31,6 +31,7 @@ public class MainActivity extends Activity  {
         	@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+        		System.out.println("Participate Btn click");
     				Intent regIntent = new Intent("com.example.msn.REG");
     				startActivity(regIntent);
 			}

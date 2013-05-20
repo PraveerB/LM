@@ -10,12 +10,6 @@
     tools:context=".CaptionActivity" >
 
     <ImageView
-        android:id="@+id/uploadedImagePreview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/captionSubmit"/>
-
-    <ImageView
         android:id="@+id/captionSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,13 +32,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/uploadedImageCaption"
-        android:layout_toLeftOf="@+id/uploadedImagePreview"
+        android:layout_alignRight="@+id/captionSubmit"
         android:src="@drawable/change" />
 
     <ImageView
         android:id="@+id/uploadedImageCaption"
-        android:layout_width="250dp"
-        android:layout_height="160dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+          android:maxWidth="250dp"
+        android:maxHeight="160dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="27dp" />
 

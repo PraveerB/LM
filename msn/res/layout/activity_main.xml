@@ -10,15 +10,6 @@
     tools:context=".MainActivity" >
 
     <ImageView
-        android:id="@+id/participateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:clickable="true"
-        android:src="@drawable/participatebtn" />
-
-    <ImageView
         android:id="@+id/testImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,12 +20,20 @@
     </ImageView>
 
     <ImageView
+        android:id="@+id/participateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/participatebtn" />
+
+    <ImageView
         android:id="@+id/gotogGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/participateBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="57dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/gallery" />
 
 </RelativeLayout>
