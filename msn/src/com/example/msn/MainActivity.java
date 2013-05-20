@@ -11,23 +11,22 @@ import android.widget.ImageView;
 public class MainActivity extends Activity  {
 	
 	ImageView participateBtn;
-	ImageView galleryBtn;
+	ImageView gallery;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        participateBtn = (ImageView) findViewById(R.id.participateBtn);
-        galleryBtn = (ImageView)findViewById(R.id.galleryFirst);
-        galleryBtn.setOnClickListener(new OnClickListener() {
+        gallery = (ImageView) findViewById(R.id.gotogGallery);
+        gallery.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent glIntent = new Intent("com.example.msn.GALLERY");
-				startActivity(glIntent);
+				Intent gallery = new Intent("com.example.msn.GALLERY");
+				startActivity(gallery);
 			}
 		});
-        
+        participateBtn = (ImageView) findViewById(R.id.participateBtn);
         participateBtn.setOnClickListener(new OnClickListener() {
         	@Override
 			public void onClick(View arg0) {
@@ -44,6 +43,4 @@ public class MainActivity extends Activity  {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
-    
 }

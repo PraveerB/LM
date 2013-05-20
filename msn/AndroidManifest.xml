@@ -85,5 +85,4 @@
           android:label="@string/app_name" />
         <meta-data android:value="@string/app_id" android:name="com.facebook.sdk.ApplicationId"/>
     </application>
-
 </manifest>
