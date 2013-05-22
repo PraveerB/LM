@@ -37,7 +37,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
-    android:layout_alignRight="@+id/uploadBtn"
+    android:layout_centerHorizontal="true"
     android:background="@drawable/popup_bg"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -53,38 +53,29 @@
         android:src="@drawable/whitebg" />
 
     <ImageView
-        android:id="@+id/facebookSelectPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/phonegallery"
-        android:layout_centerVertical="true"
-        android:src="@drawable/facebookgallery"
-        android:visibility="invisible" />
-
-    <ImageView
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/phonegallery"
         android:layout_alignRight="@+id/whitebg"
-        android:layout_marginBottom="10dp"
         android:src="@drawable/close" />
 
     <ImageView
         android:id="@+id/phonegallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/facebookSelectPhoto"
-        android:layout_alignRight="@+id/whitebg"
-        android:layout_marginRight="10dp"
+        android:layout_alignTop="@+id/whitebg"
+        android:layout_marginTop="14dp"
+        android:layout_toLeftOf="@+id/close"
         android:src="@drawable/phonegallery" />
 
     <ImageView
         android:id="@+id/camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/facebookSelectPhoto"
-        android:layout_below="@+id/facebookSelectPhoto"
+        android:layout_below="@+id/phonegallery"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/close"
         android:src="@drawable/cameragallery" />
 
 </RelativeLayout>

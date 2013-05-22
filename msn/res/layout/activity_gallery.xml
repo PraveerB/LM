@@ -10,40 +10,40 @@
     tools:context=".GalleryActivity" >
 
     <ImageView
+        android:id="@+id/recentImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/allImages"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/allImages"
+        android:src="@drawable/recententries" />
+
+    <ImageView
         android:id="@+id/allImages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/userEntryImage"
-        android:layout_marginTop="33dp"
-        android:src="@drawable/recententries" />
-
-    <ImageView
-        android:id="@+id/recentImages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/allImages"
-        android:layout_marginRight="15dp"
-        android:layout_toLeftOf="@+id/allImages"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/allentries_click" />
 
-    <HorizontalScrollView
-        android:id="@+id/galleryHorizontalScrollView"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignLeft="@+id/userEntryImage"
-        android:layout_below="@+id/userEntryImage"
-        android:layout_marginTop="7dp" >
-
-    </HorizontalScrollView>
     <HorizontalScrollView
         android:id="@+id/galleryHorizontalScrollViewRecent"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_alignLeft="@+id/userEntryImage"
-        android:layout_below="@+id/userEntryImage"
-        android:layout_marginTop="7dp"
+        android:layout_alignLeft="@+id/likeBtn"
+         android:layout_alignRight="@+id/userEntryImage"
+        
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
         android:visibility="invisible" >
+    
+        
+
+      
+        
+        
     </HorizontalScrollView>
 
     <TextView
@@ -52,20 +52,10 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/galleryHorizontalScrollView"
         android:layout_below="@+id/galleryHorizontalScrollView"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="17dp"
-        android:text="TextView"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        
         android:textColor="#FFFFFF" />
-
-    <TextView
-        android:id="@+id/voteCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/userCaption"
-        android:layout_marginTop="16dp"
-        android:layout_toRightOf="@+id/userCaption"
-        android:textColor="#FFFFFF"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/hiddenIndex"
@@ -76,7 +66,7 @@
         android:layout_below="@+id/userCaption"
         android:layout_marginRight="25dp"
         android:visibility="invisible"
-        android:text="TextView" />
+         />
 
     <ImageView
         android:id="@+id/fshareBtn"
@@ -89,11 +79,11 @@
     <ImageView
         android:id="@+id/userEntryImage"
         android:layout_width="375dp"
-        android:layout_height="140dp"
+        android:layout_height="135dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/recentImages"
         android:layout_marginRight="2dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/gallerybg" />
 
     <ImageView
@@ -110,6 +100,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/galleryHorizontalScrollView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
         android:src="@drawable/arrow1" />
 
     <ImageView
@@ -118,6 +110,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/galleryHorizontalScrollView"
+        android:layout_marginTop="5dp"
         android:src="@drawable/arrow2" />
+
+    <HorizontalScrollView
+        android:id="@+id/galleryHorizontalScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignLeft="@+id/likeBtn"
+        android:layout_alignRight="@+id/userEntryImage"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp" >
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/voteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userCaption"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/likeBtn"
+        
+        android:textColor="#FFFFFF" />
     
 </RelativeLayout>

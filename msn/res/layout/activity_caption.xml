@@ -10,38 +10,40 @@
     tools:context=".CaptionActivity" >
 
     <ImageView
-        android:id="@+id/captionSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/caption"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/submit" />
+        android:id="@+id/uploadedImageCaption"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="152dp" />
 
     <EditText
         android:id="@+id/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/uploadedImageCaption"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="33dp"
         android:layout_toLeftOf="@+id/changeBtn"
-        android:ems="9" />
+        android:ems="8" >
+
+        <requestFocus />
+    </EditText>
+
+    <ImageView
+        android:id="@+id/captionSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/caption"
+        android:layout_alignRight="@+id/uploadedImageCaption"
+        android:src="@drawable/submit" />
 
     <ImageView
         android:id="@+id/changeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/uploadedImageCaption"
-        android:layout_alignRight="@+id/captionSubmit"
+        android:layout_alignBottom="@+id/uploadedImageCaption"
+        android:layout_alignLeft="@+id/captionSubmit"
+        android:layout_marginBottom="120dp"
         android:src="@drawable/change" />
-
-    <ImageView
-        android:id="@+id/uploadedImageCaption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-          android:maxWidth="250dp"
-        android:maxHeight="160dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="27dp" />
 
 </RelativeLayout>

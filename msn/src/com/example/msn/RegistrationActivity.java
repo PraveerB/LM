@@ -67,7 +67,7 @@ public class RegistrationActivity extends Activity {
 		                System.out.println(res);
 		                if(UserInfo.getFb_id() != null) {
 		                	//String con.checkNew();
-		                	if((!res.equals("new"))) {
+		                	if((!res.equals("new")) && UserInfo.getEmail() != null) {
 		                		Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
 			                	startActivity(uploadGalleryIntent);
 		                	}

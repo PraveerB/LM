@@ -268,20 +268,25 @@ public class GalleryActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				galleryHorizontalScrollViewRecent.setVisibility(View.VISIBLE);
-				scrollView.setVisibility(View.INVISIBLE);
-				allEntry.setImageResource(R.drawable.recententries);
-				recentEntry.setImageResource(R.drawable.allentries_click);
+				galleryHorizontalScrollViewRecent.setVisibility(View.INVISIBLE);
+				scrollView.setVisibility(View.VISIBLE);
+
+				allEntry.setImageResource(R.drawable.allentries_click);
+				recentEntry.setImageResource(R.drawable.recententries);
+				
+				flag = false;
 			}
 		});
 		recentEntry.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				galleryHorizontalScrollViewRecent.setVisibility(View.INVISIBLE);
-				scrollView.setVisibility(View.VISIBLE);
-				allEntry.setImageResource(R.drawable.recententries_click);
-				recentEntry.setImageResource(R.drawable.allentries);
+				galleryHorizontalScrollViewRecent.setVisibility(View.VISIBLE);
+				scrollView.setVisibility(View.INVISIBLE);
+
+				allEntry.setImageResource(R.drawable.allentries);
+				recentEntry.setImageResource(R.drawable.recententries_click);
+				flag = true;
 			}
 		});
 	}

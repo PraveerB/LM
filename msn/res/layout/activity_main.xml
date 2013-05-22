@@ -36,4 +36,33 @@
         android:layout_marginBottom="10dp"
         android:src="@drawable/gallery" />
 
+    <RelativeLayout
+        android:id="@+id/popUpTNC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/testImageView"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/popup_bg"
+        android:visibility="invisible" >
+        <ImageView
+            android:id="@+id/closeTNC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/close" />
+
+        <TextView
+            android:id="@+id/popUpTNCText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/closeTNC"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="19dp"
+            android:layout_toLeftOf="@+id/closeTNC"
+            android:text="ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz" />
+       
+    </RelativeLayout>
+
 </RelativeLayout>

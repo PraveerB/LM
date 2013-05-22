@@ -10,25 +10,13 @@
     tools:context=".RegistrationActivity" >
 
     <EditText
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="164dp"
-        android:ems="7" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
         android:id="@+id/city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/email"
         android:layout_below="@+id/email"
-        android:ems="7" />
+        android:ems="7" 
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/email"
@@ -37,7 +25,8 @@
         android:layout_alignLeft="@+id/name"
         android:layout_below="@+id/name"
         android:ems="7"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress" 
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/phone"
@@ -46,7 +35,8 @@
         android:layout_alignLeft="@+id/city"
         android:layout_below="@+id/city"
         android:ems="7"
-        android:inputType="phone" />
+        android:inputType="phone" 
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -71,7 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/city"
         android:layout_alignRight="@+id/textView1"
-        android:text="*CITY" />
+        android:text="*CITY"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/textView4"
@@ -81,13 +72,24 @@
         android:layout_alignRight="@+id/textView3"
         android:text="*MOBILE" />
 
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="147dp"
+        android:layout_toRightOf="@+id/textView2"
+        android:ems="7"
+        android:singleLine="true" />
+
     <ImageView
         android:id="@+id/submit1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/phone"
         android:layout_below="@+id/phone"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:scaleType="fitXY"
         android:src="@drawable/submit" />
 
