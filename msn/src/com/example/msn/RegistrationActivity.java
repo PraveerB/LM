@@ -28,89 +28,130 @@ public class RegistrationActivity extends Activity {
 	ProgressBar wait;
 	Toast toast;
 	UserInfo userInfo = MainActivity.userInfo;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration);
-		if(userInfo == null){
+		if (userInfo == null) {
 			userInfo = new UserInfo();
+			System.out.println("Userinfo null");
 		}
-		
+
+		if (Session.openActiveSessionFromCache(this.getBaseContext()) != null) {
+			System.out.println("Session Not null......");
+		} else {
+			System.out.println("Null.....");
+		}
+
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
-			  
-		      // callback when session changes state
-		      @Override 	
-		      public void call(Session session, SessionState state, Exception exception) {
-		        if (session.isOpened()) {
-		        	if(userInfo.getFb_id() == null && userInfo.getFirstName() == null){
-		        		
-		        	
-		        	
-		          // make request to the /me API
-		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-		        	 
-		            // callback after Graph API response with user object
-		            @Override
-		            public void onCompleted(GraphUser user, Response response) {
-		              if (user != null) {
-		                //TextView welcome = (TextView) findViewById(R.id.welcome);
-		                //welcome.setText("Hello " + user.getId() + "!");
-		            	//System.out.println("inside not null");
-		                userInfo.setFb_id(user.getId());
-		                userInfo.setFirstName(user.getFirstName());
-		                if(user.getMiddleName() != null)
-		                	userInfo.setMiddleName(user.getMiddleName());
-		                if(user.getLastName() != null)
-		                	userInfo.setLastName(user.getLastName());
-		                if(user.getProperty("gender") != null)
-		                	userInfo.setGender((String) user.getProperty("gender"));
-		                if(user.getUsername() != null)
-		                	userInfo.setUsername(user.getUsername());
-		                else
-		                userInfo.setUsername(user.getId());	
-		                userInfo.displayData();
-		                //welcome.setText(user.toString());
-		                ConnectionHelper con = new ConnectionHelper();
-		                String res = con.saveMobileUserInfo();
-		                System.out.println(res);
-		                if(userInfo.getFb_id() != null) {
-		                	//String con.checkNew();
-		                	if((!res.equals("new")) && userInfo.getEmail() != null) {
-		                		Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
-			                	startActivity(uploadGalleryIntent);
-		                	}
-		                }
-		                else {
-		                	Toast.makeText(getBaseContext(), "Something bad happened!!", Toast.LENGTH_SHORT);
-		                	Intent participate = new Intent("com.example.msn.MAIN");
-			            	startActivity(participate);
-		                }
-		                
-		              }
-		              else {
-		            	  Toast.makeText(getBaseContext(), "Something bad happened!!", Toast.LENGTH_SHORT);
-		            	  Intent participate = new Intent("com.example.msn.MAIN");
-		            	  startActivity(participate);
-		            	  
-		              }
-		            }
-		          });
-		        }
-		        	else{
-		        		Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
-	                	startActivity(uploadGalleryIntent);
-		        	}
-		        }
-		      }
-		    });	
-		
+
+			// callback when session changes state
+			@Override
+			public void call(Session session, SessionState state,
+					Exception exception) {
+
+				System.out.println("Call function");
+				if (userInfo.getFb_id() != null)
+					System.out.println(userInfo.getFb_id());
+				if (session.isOpened()) {
+					System.out.println("session open");
+					if (userInfo.getFb_id() == null) {
+						
+						// make request to the /me API
+						Request.executeMeRequestAsync(session,
+								new Request.GraphUserCallback() {
+									
+									// callback after Graph API response with
+									// user object
+									@Override
+									public void onCompleted(GraphUser user,
+											Response response) {
+										if (user != null) {
+											System.out.println("User not null");
+											// TextView welcome = (TextView)
+											// findViewById(R.id.welcome);
+											// welcome.setText("Hello " +
+											// user.getId() + "!");
+											// System.out.println("inside not null");
+											userInfo.setFb_id(user.getId());
+											userInfo.setFirstName(user
+													.getFirstName());
+											if (user.getMiddleName() != null)
+												userInfo.setMiddleName(user
+														.getMiddleName());
+											if (user.getLastName() != null)
+												userInfo.setLastName(user
+														.getLastName());
+											if (user.getProperty("gender") != null)
+												userInfo.setGender((String) user
+														.getProperty("gender"));
+											if (user.getUsername() != null)
+												userInfo.setUsername(user
+														.getUsername());
+											else
+												userInfo.setUsername(user
+														.getId());
+											userInfo.displayData();
+											// welcome.setText(user.toString());
+											ConnectionHelper con = new ConnectionHelper();
+											String res = con
+													.saveMobileUserInfo();
+											System.out.println(res);
+											if (userInfo.getFb_id() != null) {
+												// String con.checkNew();
+												if ((!res.equals("new"))
+														&& userInfo.getEmail() != null) {
+													Intent uploadGalleryIntent = new Intent(
+															"com.example.msn.UPLOADGALLERY");
+													startActivity(uploadGalleryIntent);
+												}
+											} else {
+												System.out
+														.println("Something bad happened!!");
+												Toast.makeText(
+														getBaseContext(),
+														"Something bad happened!!",
+														Toast.LENGTH_SHORT);
+												Intent participate = new Intent(
+														"com.example.msn.MAIN");
+												// startActivity(participate);
+											}
+
+										} else {
+											Toast.makeText(getBaseContext(),
+													"Something bad happened!!",
+													Toast.LENGTH_SHORT);
+											System.out
+													.println("something bad happened user null");
+											// Intent participate = new
+											// Intent("com.example.msn.MAIN");
+											// startActivity(participate);
+
+										}
+									}
+								});
+					} else {
+						System.out.println("else");
+						Intent uploadGalleryIntent = new Intent(
+								"com.example.msn.UPLOADGALLERY");
+						startActivity(uploadGalleryIntent);
+					}
+				}
+				else {
+					System.out.println(session);
+					
+				}
+			}
+		});
+
 		submitBtn = (ImageView) findViewById(R.id.submit1);
 		name = (EditText) findViewById(R.id.name);
 		city = (EditText) findViewById(R.id.city);
 		email = (EditText) findViewById(R.id.email);
 		contact = (EditText) findViewById(R.id.phone);
 		submitBtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -119,72 +160,72 @@ public class RegistrationActivity extends Activity {
 				String uemail = email.getText().toString();
 				String ucity = city.getText().toString();
 				String ucontact = contact.getText().toString();
-				//userInfo userInfo = new UserInfo();
+				// userInfo userInfo = new UserInfo();
 				System.out.println(uname.length());
-				if(uname.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Name!!", Toast.LENGTH_SHORT);
+				if (uname.length() == 0) {
+					toast = Toast.makeText(getBaseContext(),
+							"Please Enter Name!!", Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else if(uemail.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Email!!", Toast.LENGTH_SHORT);
+				} else if (uemail.length() == 0) {
+					toast = Toast.makeText(getBaseContext(),
+							"Please Enter Email!!", Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else if(ucity.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter City!!", Toast.LENGTH_SHORT);
+				} else if (ucity.length() == 0) {
+					toast = Toast.makeText(getBaseContext(),
+							"Please Enter City!!", Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else if(ucontact.length() == 0) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Mobile Number!!", Toast.LENGTH_SHORT);
+				} else if (ucontact.length() == 0) {
+					toast = Toast.makeText(getBaseContext(),
+							"Please Enter Mobile Number!!", Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else if(!chkEmail(uemail)) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Valid Email!!", Toast.LENGTH_SHORT);
+				} else if (!chkEmail(uemail)) {
+					toast = Toast.makeText(getBaseContext(),
+							"Please Enter Valid Email!!", Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else if(ucontact.length() != 10) {
-					toast = Toast.makeText(getBaseContext(), "Please Enter Valid 10 digit Mobile Number!!", Toast.LENGTH_SHORT);
+				} else if (ucontact.length() != 10) {
+					toast = Toast.makeText(getBaseContext(),
+							"Please Enter Valid 10 digit Mobile Number!!",
+							Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else {
-					
+				} else {
+
 					userInfo.setName(uname);
 					userInfo.setEmail(uemail);
 					System.out.println(userInfo.getEmail());
 					userInfo.setCity(ucity);
 					userInfo.setContact(ucontact);
-					
+
 					userInfo.serialize(getBaseContext(), "userInfo");
-					Intent uploadIntent = new Intent("com.example.msn.UPLOADGALLERY");
+					Intent uploadIntent = new Intent(
+							"com.example.msn.UPLOADGALLERY");
 					startActivity(uploadIntent);
 				}
 			}
 		});
-        }
+	}
 
 	public boolean chkEmail(String uemail) {
 		String regEx = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b";
 		Pattern p = Pattern.compile(regEx);
 		Matcher m = p.matcher(uemail);
-		if(m.find()) 
-		 {
-		  return true; }
-		 else
-		 {
-		  return false;
-		 }
+		if (m.find()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.registration, menu);
 		return true;
 	}
-	
 
 	@Override
-	  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	      super.onActivityResult(requestCode, resultCode, data);
-	      Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-	  }
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(this, requestCode,
+				resultCode, data);
+	}
 
 }

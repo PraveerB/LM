@@ -117,7 +117,7 @@ public class UploadGalleryActivity extends Activity {
 				
 				Bitmap bmpHold = (Bitmap) extras.get("data");
 				
-				bmp = Bitmap.createScaledBitmap(bmpHold,(int)(bmpHold.getWidth()*0.6), (int)(bmpHold.getHeight()*0.6), true);
+				bmp = Bitmap.createScaledBitmap(bmpHold,(int)(bmpHold.getWidth()*0.9), (int)(bmpHold.getHeight()*0.9), true);
 				
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -147,7 +147,7 @@ public class UploadGalleryActivity extends Activity {
 	            //bmp = BitmapFactory.decodeFile(filePath);
 				Bitmap bmpHold = BitmapFactory.decodeFile(filePath);
 				
-				bmp = Bitmap.createScaledBitmap(bmpHold,(int)(bmpHold.getWidth()*0.6), (int)(bmpHold.getHeight()*0.6), true);
+				bmp = Bitmap.createScaledBitmap(bmpHold,(int)(bmpHold.getWidth()*0.9), (int)(bmpHold.getHeight()*0.9), true);
 
 	            
 	            ByteArrayOutputStream stream = new ByteArrayOutputStream();

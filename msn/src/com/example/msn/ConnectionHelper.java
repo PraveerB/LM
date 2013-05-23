@@ -200,8 +200,12 @@ class ConnectionHelper {
 			
 //Parameters to send to server
 			reqEntity.addPart("file", bab);
-			if(userInfo.getFb_id() != null)
+			if(userInfo.getFb_id() != null) {
 				reqEntity.addPart("uid", new StringBody(userInfo.getFb_id()));
+			}
+			else {
+				reqEntity.addPart("uid", new StringBody("0"));
+			}
 			if(userInfo.getCaption() != null)
 				reqEntity.addPart("caption", new StringBody(userInfo.getCaption()));
 			if(userInfo.getEmail() != null)
@@ -235,7 +239,8 @@ class ConnectionHelper {
 			return "response:        " + s.toString();
 		} catch (Exception e) {
 			System.out.println("Exception");
-			//e.printStackTrace();
+			e.printStackTrace();
+			
 			return "Something bad happened!!";
 			// Log.e(e.getClass().getName(), e.getMessage());
 		}
