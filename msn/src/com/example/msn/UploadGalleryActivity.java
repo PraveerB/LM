@@ -27,7 +27,7 @@ public class UploadGalleryActivity extends Activity {
 	boolean galleryData = false;
 	boolean cameraData = false;
 	RelativeLayout popupLayout;
-	
+	UserInfo userInfo = MainActivity.userInfo ;
 	@SuppressLint("NewApi")
 	@Override
 	public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
@@ -44,6 +44,10 @@ public class UploadGalleryActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_uploadgallery);
+		if(userInfo == null){
+			userInfo = new UserInfo();
+		}
+		
 		uploadBtn = (ImageView) findViewById(R.id.camera);
 		popupLayout = (RelativeLayout) findViewById(R.id.popupLayout);
 		uploadChoices = (ImageView) findViewById(R.id.uploadBtn);
@@ -109,18 +113,22 @@ public class UploadGalleryActivity extends Activity {
 			System.out.println("Inside if.."+ requestCode);
 			if( cameraData) {
 				Bundle extras= data.getExtras();
-				bmp = (Bitmap) extras.get("data");
+				//bmp = (Bitmap) extras.get("data");
+				
+				Bitmap bmpHold = (Bitmap) extras.get("data");
+				
+				bmp = Bitmap.createScaledBitmap(bmpHold,(int)(bmpHold.getWidth()*0.6), (int)(bmpHold.getHeight()*0.6), true);
 				
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 	            byte[] byteArray = stream.toByteArray();
 				
-	            System.out.println("Camera.........");
-				System.out.println(byteArray);
-	            System.out.println(UserInfo.getUploadedImage());
+	            //System.out.println("Camera.........");
+				//System.out.println(byteArray);
+	            //System.out.println(userInfo.getUploadedImage());
 	            
-				UserInfo.setUploadedImage(byteArray);
-	            System.out.println(UserInfo.getUploadedImage());
+	            userInfo.setUploadedImage(byteArray);
+	            //System.out.println(userInfo.getUploadedImage());
 
 				Intent captionIntent = new Intent("com.example.msn.CAPTION");
 				startActivity(captionIntent);
@@ -136,82 +144,17 @@ public class UploadGalleryActivity extends Activity {
 	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 	            String filePath = cursor.getString(columnIndex);
 	            cursor.close();
-	            /*
-	            HttpURLConnection connection = null;
-	            DataOutputStream outputStream = null;
-	            DataInputStream inputStream = null;
+	            //bmp = BitmapFactory.decodeFile(filePath);
+				Bitmap bmpHold = BitmapFactory.decodeFile(filePath);
+				
+				bmp = Bitmap.createScaledBitmap(bmpHold,(int)(bmpHold.getWidth()*0.6), (int)(bmpHold.getHeight()*0.6), true);
 
-	            String pathToOurFile = filePath;
-	            String urlServer = "http://msncontest-fb.azurewebsites.net/index.php/site/getMobileData";
-	            String lineEnd = "\r\n";
-	            String twoHyphens = "--";
-	            String boundary =  "*****";
-
-	            int bytesRead, bytesAvailable, bufferSize;
-	            byte[] buffer;
-	            int maxBufferSize = 1*1024*1024;
-
-	            try
-	            {
-	            FileInputStream fileInputStream = new FileInputStream(new File(pathToOurFile) );
-
-	            URL url = new URL(urlServer);
-	            connection = (HttpURLConnection) url.openConnection();
-
-	            // Allow Inputs & Outputs
-	            connection.setDoInput(true);
-	            connection.setDoOutput(true);
-	            connection.setUseCaches(false);
-
-	            // Enable POST method
-	            connection.setRequestMethod("POST");
-
-	            connection.setRequestProperty("Connection", "Keep-Alive");
-	            connection.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
-
-	            outputStream = new DataOutputStream( connection.getOutputStream() );
-	            outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-	            outputStream.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + pathToOurFile +"\"" + lineEnd);
-	            outputStream.writeBytes(lineEnd);
-
-	            bytesAvailable = fileInputStream.available();
-	            bufferSize = Math.min(bytesAvailable, maxBufferSize);
-	            buffer = new byte[bufferSize];
-
-	            // Read file
-	            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-	            while (bytesRead > 0)
-	            {
-	            outputStream.write(buffer, 0, bufferSize);
-	            bytesAvailable = fileInputStream.available();
-	            bufferSize = Math.min(bytesAvailable, maxBufferSize);
-	            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-	            }
-
-	            outputStream.writeBytes(lineEnd);
-	            outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-	            // Responses from the server (code and message)
-	            int serverResponseCode = connection.getResponseCode();
-	            String serverResponseMessage = connection.getResponseMessage();
-	            System.out.println(serverResponseCode);
-	            System.out.println(serverResponseMessage);
-	            fileInputStream.close();
-	            outputStream.flush();
-	            outputStream.close();
-	            }
-	            catch (Exception ex)
-	            {
-	            //Exception handling
-	            }*/
-	            bmp = BitmapFactory.decodeFile(filePath);
 	            
 	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 	            byte[] byteArray = stream.toByteArray();
 	            
-				UserInfo.setUploadedImage(byteArray);
+	            userInfo.setUploadedImage(byteArray);
 				Intent captionIntent = new Intent("com.example.msn.CAPTION");
 				startActivity(captionIntent);
 			}

@@ -1,186 +1,175 @@
 package com.example.msn;
 
-public class UserInfo {
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-	private static String firstName;
-	private static String middleName;
-	private static String lastName;
-	private static String username;
-	private static String name;
-	private static String email;
-	private static String city;
-	private static String contact;
-	private static String fb_id;
-	private static String gender;
-	private static byte[] uploadedImage;
-	private static String accessToken;
-	private static String caption;
+import android.content.Context;
+
+public class UserInfo implements Serializable {
+
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private String username;
+	private String name;
+	private String email;
+	private String city;
+	private String contact;
+	private String fb_id;
+	private String gender;
+	private byte[] uploadedImage;
+	private String accessToken;
+	private String caption;
 	
 	
-	public static String getCaption() {
-		return caption;
-	}
+	
 
-
-
-	public static void setCaption(String caption) {
-		UserInfo.caption = caption;
-	}
-
-
-
-	public static String getFirstName() {
+	
+	public String getFirstName() {
 		return firstName;
 	}
 
-
-
-	public static void setFirstName(String firstName) {
-		UserInfo.firstName = firstName;
-	}
-
-
-
-	public static String getMiddleName() {
+	public String getMiddleName() {
 		return middleName;
 	}
 
-
-
-	public static void setMiddleName(String middleName) {
-		UserInfo.middleName = middleName;
-	}
-
-
-
-	public static String getLastName() {
+	public String getLastName() {
 		return lastName;
 	}
 
-
-
-	public static void setLastName(String lastName) {
-		UserInfo.lastName = lastName;
-	}
-
-
-
-	public static String getUsername() {
+	public String getUsername() {
 		return username;
 	}
 
-
-
-	public static void setUsername(String username) {
-		UserInfo.username = username;
-	}
-
-
-
-	public static String getName() {
+	public String getName() {
 		return name;
 	}
 
-
-
-	public static void setName(String name) {
-		UserInfo.name = name;
-	}
-
-
-
-	public static String getEmail() {
-		
+	public String getEmail() {
 		return email;
 	}
 
-
-
-	public static void setEmail(String email) {
-		//System.out.println(email);
-		UserInfo.email = email;
-	}
-
-
-
-	public static String getCity() {
+	public String getCity() {
 		return city;
 	}
 
-
-
-	public static void setCity(String city) {
-		UserInfo.city = city;
-	}
-
-
-
-	public static String getContact() {
+	public String getContact() {
 		return contact;
 	}
 
-
-
-	public static void setContact(String contact) {
-		UserInfo.contact = contact;
-	}
-
-
-
-	public static String getFb_id() {
+	public String getFb_id() {
 		return fb_id;
 	}
 
-
-
-	public static void setFb_id(String fb_id) {
-		UserInfo.fb_id = fb_id;
-	}
-
-
-
-	public static String getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-
-
-	public static void setGender(String gender) {
-		UserInfo.gender = gender;
-	}
-
-
-
-	public static byte[] getUploadedImage() {
+	public byte[] getUploadedImage() {
 		return uploadedImage;
 	}
 
-
-
-	public static void setUploadedImage(byte[] uploadedImage) {
-		UserInfo.uploadedImage = uploadedImage;
-	}
-
-
-
-	public static String getAccessToken() {
+	public String getAccessToken() {
 		return accessToken;
 	}
 
-
-
-	public static void setAccessToken(String accessToken) {
-		UserInfo.accessToken = accessToken;
+	public String getCaption() {
+		return caption;
 	}
-	
 
-	
-	public static void displayData() {
-		System.out.println(getFb_id());
-		System.out.println(getUsername());
-		System.out.println(getFirstName());
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public void setFb_id(String fb_id) {
+		this.fb_id = fb_id;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public void setUploadedImage(byte[] uploadedImage) {
+		this.uploadedImage = uploadedImage;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
+	public void displayData() {
+		System.out.println(this.getFb_id());
+		System.out.println(this.getUsername());
+		System.out.println(this.getFirstName());
 		//System.out.println(getEmail());
-		System.out.println(getLastName());
-		System.out.println(getGender());
-	}
+		System.out.println(this.getLastName());
+		System.out.println(this.getGender());
+	}	
+	
+	public void serialize(Context context,  String fileNaqme)
+	{
+	   FileOutputStream str = null;
+	   ObjectOutputStream objStr = null;
+	   try {
+	     str = context.openFileOutput(fileNaqme, Context.MODE_PRIVATE);
+	     objStr = new ObjectOutputStream(str);
+
+	     objStr.writeObject(this);
+
+	    } catch (FileNotFoundException e)
+	    {
+	        e.printStackTrace();
+	    } catch (IOException e)
+	    {
+	        e.printStackTrace();
+	    } finally
+	    {
+	        try
+	        {
+	            if (objStr != null) objStr.close();
+	        } catch (IOException e) {}
+	        try
+	        {
+	           if (str != null) str.close();
+	        } catch (IOException e) {}
+	    }
+	}	
+	
+	
 }

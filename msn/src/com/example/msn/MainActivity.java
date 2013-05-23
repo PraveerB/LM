@@ -1,5 +1,12 @@
 package com.example.msn;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,10 +24,44 @@ public class MainActivity extends Activity  {
 	RelativeLayout popUpTNC;
 	ImageView closePopUpTNC;
 	boolean isParticipate = false;
+	static UserInfo userInfo = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Toast.makeText(getBaseContext(), "Testing.........", Toast.LENGTH_SHORT).show();
+        FileInputStream fis;
+		try {
+			fis = getBaseContext().openFileInput("userInfo");
+			//System.out.println("File null::: "+fis == null);
+			if(fis != null){
+				ObjectInputStream is = new ObjectInputStream(fis);
+		    	userInfo =  (UserInfo) is.readObject();
+		    	System.out.println("Saved email ::: "+userInfo.getEmail());
+			}
+			else{
+				System.out.println("File not found...");
+			}
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("FileNotFoundException ... ");
+			e.printStackTrace();
+		} catch (StreamCorruptedException e) {
+			// TODO Auto-generated catch block
+			System.out.println("StreamCorruptedException  ... ");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("IOException  ... ");
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("ClassNotFoundException Exception ... ");
+			e.printStackTrace();
+		}
+    	
+        
         
         gallery = (ImageView) findViewById(R.id.gotogGallery);
         

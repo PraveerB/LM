@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="26dp"
-        android:layout_marginTop="147dp"
+        android:layout_marginTop="140dp"
         android:layout_toRightOf="@+id/textView2"
         android:ems="7"
         android:singleLine="true" />

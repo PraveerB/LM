@@ -18,12 +18,16 @@ import org.apache.http.params.HttpParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class CaptionActivity extends Activity {
@@ -32,13 +36,20 @@ public class CaptionActivity extends Activity {
 	EditText caption;
 	String captionText;
 	ImageView uploadedImage;
+	ProgressBar progressBarSave;
+	UserInfo userInfo = MainActivity.userInfo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_caption);
-		uploadedImage = (ImageView) findViewById(R.id.uploadedImageCaption);
+		progressBarSave = (ProgressBar) findViewById(R.id.progressBarSave);
+		if(userInfo == null){
+			userInfo = new UserInfo();
+		}
 		
-		byte[] imageByteArray = UserInfo.getUploadedImage();
+		uploadedImage = (ImageView) findViewById(R.id.uploadedImageCaption);
+		//userInfo = new UserInfo();
+		byte[] imageByteArray = userInfo.getUploadedImage();
 		
 		uploadedImage.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray  , 0, imageByteArray.length));
 		
@@ -64,19 +75,19 @@ public class CaptionActivity extends Activity {
 					Toast.makeText(getBaseContext(), "Please Enter Caption!!", Toast.LENGTH_SHORT).show();
 				}
 				else {
-					UserInfo.setCaption(caption.getText().toString());
+					progressBarSave.setVisibility(View.VISIBLE);
+					
+					userInfo.setCaption(caption.getText().toString());
 					ConnectionHelper con = new ConnectionHelper();
-	 				con.executeMultipartPost();
+	 				String str= con.executeMultipartPost();
+	 				Toast.makeText(getBaseContext(), "Before toast", Toast.LENGTH_SHORT).show();
+	 				Toast.makeText(getBaseContext(), str, Toast.LENGTH_SHORT).show();
 					Intent doneIntent = new Intent("com.example.msn.DONE");
 					startActivity(doneIntent);
 				}
 			}
 		});
-		
-		
-		
 	}
-
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,7 +96,18 @@ public class CaptionActivity extends Activity {
 		return true;
 	}
 	
-    
+    @Override
+    protected void onPause() {
+    	// TODO Auto-generated method stub
+    	super.onPause();
+    	
+    }
 
 
+    @Override
+    protected void onDestroy() {
+    	// TODO Auto-generated method stub
+    	super.onDestroy();
+    	progressBarSave.setVisibility(View.INVISIBLE);
+    }
 }

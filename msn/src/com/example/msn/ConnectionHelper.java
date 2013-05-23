@@ -20,6 +20,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -29,7 +30,16 @@ import com.facebook.model.GraphUser;
 
 class ConnectionHelper {
 	String res = "test";
+	static UserInfo userInfo = MainActivity.userInfo ;
 	void connectToFacebook(Activity activity) {
+		
+		if(userInfo == null ){
+			System.out.println("UserInfo NULL.......");
+			userInfo = new UserInfo();
+		}
+		else{
+			System.out.println("UserInfo NOT NULL.......");
+		}
 		Session.openActiveSession(activity, true, new Session.StatusCallback() {
 			  
 		      // callback when session changes state
@@ -48,19 +58,19 @@ class ConnectionHelper {
 		                //TextView welcome = (TextView) findViewById(R.id.welcome);
 		                //welcome.setText("Hello " + user.getId() + "!");
 		            	System.out.println("inside not null");
-		                UserInfo.setFb_id(user.getId());
-		                UserInfo.setFirstName(user.getFirstName());
+		            	userInfo.setFb_id(user.getId());
+		            	userInfo.setFirstName(user.getFirstName());
 		                if(user.getMiddleName() != null)
-		                	UserInfo.setMiddleName(user.getMiddleName());
+		                	userInfo.setMiddleName(user.getMiddleName());
 		                if(user.getLastName() != null)
-		                	UserInfo.setLastName(user.getLastName());
+		                	userInfo.setLastName(user.getLastName());
 		                if(user.getProperty("gender") != null)
-		                	UserInfo.setGender((String) user.getProperty("gender"));
+		                	userInfo.setGender((String) user.getProperty("gender"));
 		                if(user.getUsername() != null)
-		                	UserInfo.setUsername(user.getUsername());
+		                	userInfo.setUsername(user.getUsername());
 		                else
-		                UserInfo.setUsername(user.getId());	
-		                UserInfo.displayData();
+		                	userInfo.setUsername(user.getId());	
+		                	userInfo.displayData();
 		                //welcome.setText(user.toString());
 		                res = saveMobileUserInfo();
 		              }
@@ -74,6 +84,14 @@ class ConnectionHelper {
 	
 	
 	String saveMobileUserInfo() {
+		if(userInfo == null ){
+			System.out.println("UserInfo NULL.......");
+			userInfo = new UserInfo();
+		}
+		else{
+			System.out.println("UserInfo NOT NULL.......");
+		}
+		//userInfo = new UserInfo();
 		StringBuilder s = new StringBuilder("test1");
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -83,12 +101,12 @@ class ConnectionHelper {
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			
 //Parameters to send to server
-			reqEntity.addPart("first_name", new StringBody(UserInfo.getFirstName()));
-			reqEntity.addPart("fb_id", new StringBody(UserInfo.getFb_id()));
-			reqEntity.addPart("username", new StringBody(UserInfo.getUsername()));
+			reqEntity.addPart("first_name", new StringBody(""+userInfo.getFirstName()));
+			reqEntity.addPart("fb_id", new StringBody(""+userInfo.getFb_id()));
+			reqEntity.addPart("username", new StringBody(""+userInfo.getUsername()));
 			//reqEntity.addPart("middle_name", new StringBody(UserInfo.getMiddle_name()));
-			reqEntity.addPart("last_name", new StringBody(UserInfo.getLastName()));
-			reqEntity.addPart("gender", new StringBody(UserInfo.getGender()));
+			reqEntity.addPart("last_name", new StringBody(""+userInfo.getLastName()));
+			reqEntity.addPart("gender", new StringBody(""+userInfo.getGender()));
 			//reqEntity.addPart("uid", new StringBody(UserInfo.getFb_id()));
 			
 			System.out.println("ReqEntity: " + reqEntity);
@@ -123,7 +141,7 @@ class ConnectionHelper {
 	String updateVote(int entryId) {
 		StringBuilder s = new StringBuilder("test1");
 		try {
-			if (UserInfo.getFb_id() == null) {
+			if (userInfo.getFb_id() == null) {
 				return "You Need to Login.";
 			}
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -134,7 +152,7 @@ class ConnectionHelper {
 			
 //Parameters to send to server
 			reqEntity.addPart("entry_id", new StringBody(((Integer)(entryId)).toString()));
-			reqEntity.addPart("fb_id", new StringBody(UserInfo.getFb_id()));
+			reqEntity.addPart("fb_id", new StringBody(userInfo.getFb_id()));
 			
 			System.out.println("ReqEntity: " + reqEntity);
 			postRequest.setEntity(reqEntity);
@@ -164,12 +182,15 @@ class ConnectionHelper {
 		return s.toString();
 	}
 	
-	public void executeMultipartPost(){
+	public String executeMultipartPost(){
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy); 
 			
-			byte[] data = UserInfo.getUploadedImage();
+			byte[] data = userInfo.getUploadedImage();
+			
+			//Toast.makeText(GalleryActivity.applicationContex, data.toString(), Toast.LENGTH_SHORT).show();
+			System.out.println("data ::::::::::" + data);
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost postRequest = new HttpPost("http://msncontest-fb.azurewebsites.net/index.php/site/getMobileData");
 			String fileName = "File.png";
@@ -179,18 +200,18 @@ class ConnectionHelper {
 			
 //Parameters to send to server
 			reqEntity.addPart("file", bab);
-			if(UserInfo.getFb_id() != null)
-				reqEntity.addPart("uid", new StringBody(UserInfo.getFb_id()));
-			if(UserInfo.getCaption() != null)
-				reqEntity.addPart("caption", new StringBody(UserInfo.getCaption()));
-			if(UserInfo.getEmail() != null)
-				reqEntity.addPart("email", new StringBody(UserInfo.getEmail()));
-			if(UserInfo.getContact() != null)
-				reqEntity.addPart("mobile", new StringBody(UserInfo.getContact()));
-			if(UserInfo.getCity() != null)
-				reqEntity.addPart("city", new StringBody(UserInfo.getCity()));
-			if(UserInfo.getName() != null)
-				reqEntity.addPart("name", new StringBody(UserInfo.getName()));
+			if(userInfo.getFb_id() != null)
+				reqEntity.addPart("uid", new StringBody(userInfo.getFb_id()));
+			if(userInfo.getCaption() != null)
+				reqEntity.addPart("caption", new StringBody(userInfo.getCaption()));
+			if(userInfo.getEmail() != null)
+				reqEntity.addPart("email", new StringBody(userInfo.getEmail()));
+			if(userInfo.getContact() != null)
+				reqEntity.addPart("mobile", new StringBody(userInfo.getContact()));
+			if(userInfo.getCity() != null)
+				reqEntity.addPart("city", new StringBody(userInfo.getCity()));
+			if(userInfo.getName() != null)
+				reqEntity.addPart("name", new StringBody(userInfo.getName()));
 			
 			
 			System.out.println("ReqEntity: " + reqEntity);
@@ -211,12 +232,13 @@ class ConnectionHelper {
 				s = s.append(sResponse);
 			}
 			System.out.println("Response: " + s);
+			return "response:        " + s.toString();
 		} catch (Exception e) {
 			System.out.println("Exception");
-			e.printStackTrace();
+			//e.printStackTrace();
+			return "Something bad happened!!";
 			// Log.e(e.getClass().getName(), e.getMessage());
 		}
- 
 	}
 	
 /*	
@@ -280,14 +302,6 @@ class ConnectionHelper {
 	*/
 	
 	public boolean isNetworkConnected(Context con) {
-		/*int i = 0;
-		if(i %2 ==  0){
-			i++;
-			return true;
-		}
-		else{
-			return false;
-		}*/
 		ConnectivityManager cm = (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
 		  if (ni == null) {

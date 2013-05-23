@@ -148,8 +148,9 @@ public class GalleryActivity extends Activity {
 					Entry entry1 = null ;
 					Iterator<Entry > ir = entryList.iterator();
 					while(ir.hasNext()){
-						if(ir.next().getId() == Integer.parseInt(hiddenString)){
-							entry1 = ir.next();
+						entry1 = ir.next();
+						if(entry1.getId() == Integer.parseInt(hiddenString)){
+							
 							break;
 						}
 					}

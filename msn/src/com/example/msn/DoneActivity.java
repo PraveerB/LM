@@ -12,12 +12,17 @@ import android.widget.ImageView;
 public class DoneActivity extends Activity {
 	ImageView galleryBtn;
 	ImageView uploadedImagePreviewDone;
+	UserInfo userInfo = MainActivity.userInfo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_done);
+		if(userInfo == null ){
+			userInfo = new UserInfo();
+		}
+		 
 		uploadedImagePreviewDone = (ImageView)findViewById(R.id.uploadedImagePreviewDone);
-		byte[] imageByteArray = UserInfo.getUploadedImage();
+		byte[] imageByteArray = userInfo.getUploadedImage();
 		uploadedImagePreviewDone.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray  , 0, imageByteArray.length));
 		
 		galleryBtn=(ImageView)findViewById(R.id.viewGallery);

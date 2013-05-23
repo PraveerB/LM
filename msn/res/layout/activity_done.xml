@@ -15,15 +15,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="95dp"
+        android:layout_marginBottom="112dp"
         android:src="@drawable/viewgallery" />
 
     <ImageView
         android:id="@+id/uploadedImagePreviewDone"
-        android:layout_width="240dp"
+        android:layout_width="fill_parent"
         android:layout_height="110dp"
         android:layout_above="@+id/viewGallery"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="55dp" />
-
+        android:layout_marginBottom="57dp" />
+    
 </RelativeLayout>

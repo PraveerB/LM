@@ -11,18 +11,18 @@
 
     <ImageView
         android:id="@+id/uploadedImageCaption"
-        android:layout_width="240dp"
+        android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="152dp" />
+        android:layout_marginTop="162dp" />
 
     <EditText
         android:id="@+id/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/uploadedImageCaption"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="45dp"
         android:layout_toLeftOf="@+id/changeBtn"
         android:ems="8" >
 
@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/caption"
         android:layout_alignRight="@+id/uploadedImageCaption"
+        android:layout_marginRight="15dp"
         android:src="@drawable/submit" />
 
     <ImageView
@@ -43,7 +44,17 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/uploadedImageCaption"
         android:layout_alignLeft="@+id/captionSubmit"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="110dp"
+        android:layout_marginRight="15dp"
         android:src="@drawable/change" />
+
+    <ProgressBar
+        android:id="@+id/progressBarSave"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>

@@ -27,10 +27,14 @@ public class RegistrationActivity extends Activity {
 	EditText contact;
 	ProgressBar wait;
 	Toast toast;
+	UserInfo userInfo = MainActivity.userInfo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration);
+		if(userInfo == null){
+			userInfo = new UserInfo();
+		}
 		
 		Session.openActiveSession(this, true, new Session.StatusCallback() {
 			  
@@ -38,6 +42,10 @@ public class RegistrationActivity extends Activity {
 		      @Override 	
 		      public void call(Session session, SessionState state, Exception exception) {
 		        if (session.isOpened()) {
+		        	if(userInfo.getFb_id() == null && userInfo.getFirstName() == null){
+		        		
+		        	
+		        	
 		          // make request to the /me API
 		          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 		        	 
@@ -48,26 +56,26 @@ public class RegistrationActivity extends Activity {
 		                //TextView welcome = (TextView) findViewById(R.id.welcome);
 		                //welcome.setText("Hello " + user.getId() + "!");
 		            	//System.out.println("inside not null");
-		                UserInfo.setFb_id(user.getId());
-		                UserInfo.setFirstName(user.getFirstName());
+		                userInfo.setFb_id(user.getId());
+		                userInfo.setFirstName(user.getFirstName());
 		                if(user.getMiddleName() != null)
-		                	UserInfo.setMiddleName(user.getMiddleName());
+		                	userInfo.setMiddleName(user.getMiddleName());
 		                if(user.getLastName() != null)
-		                	UserInfo.setLastName(user.getLastName());
+		                	userInfo.setLastName(user.getLastName());
 		                if(user.getProperty("gender") != null)
-		                	UserInfo.setGender((String) user.getProperty("gender"));
+		                	userInfo.setGender((String) user.getProperty("gender"));
 		                if(user.getUsername() != null)
-		                	UserInfo.setUsername(user.getUsername());
+		                	userInfo.setUsername(user.getUsername());
 		                else
-		                UserInfo.setUsername(user.getId());	
-		                UserInfo.displayData();
+		                userInfo.setUsername(user.getId());	
+		                userInfo.displayData();
 		                //welcome.setText(user.toString());
 		                ConnectionHelper con = new ConnectionHelper();
 		                String res = con.saveMobileUserInfo();
 		                System.out.println(res);
-		                if(UserInfo.getFb_id() != null) {
+		                if(userInfo.getFb_id() != null) {
 		                	//String con.checkNew();
-		                	if((!res.equals("new")) && UserInfo.getEmail() != null) {
+		                	if((!res.equals("new")) && userInfo.getEmail() != null) {
 		                		Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
 			                	startActivity(uploadGalleryIntent);
 		                	}
@@ -88,6 +96,11 @@ public class RegistrationActivity extends Activity {
 		            }
 		          });
 		        }
+		        	else{
+		        		Intent uploadGalleryIntent = new Intent("com.example.msn.UPLOADGALLERY");
+	                	startActivity(uploadGalleryIntent);
+		        	}
+		        }
 		      }
 		    });	
 		
@@ -106,7 +119,7 @@ public class RegistrationActivity extends Activity {
 				String uemail = email.getText().toString();
 				String ucity = city.getText().toString();
 				String ucontact = contact.getText().toString();
-				//UserInfo userInfo = new UserInfo();
+				//userInfo userInfo = new UserInfo();
 				System.out.println(uname.length());
 				if(uname.length() == 0) {
 					toast = Toast.makeText(getBaseContext(), "Please Enter Name!!", Toast.LENGTH_SHORT);
@@ -133,11 +146,14 @@ public class RegistrationActivity extends Activity {
 					toast.show();
 				}
 				else {
-					UserInfo.setName(uname);
-					UserInfo.setEmail(uemail);
-					System.out.println(UserInfo.getEmail());
-					UserInfo.setCity(ucity);
-					UserInfo.setContact(ucontact);
+					
+					userInfo.setName(uname);
+					userInfo.setEmail(uemail);
+					System.out.println(userInfo.getEmail());
+					userInfo.setCity(ucity);
+					userInfo.setContact(ucontact);
+					
+					userInfo.serialize(getBaseContext(), "userInfo");
 					Intent uploadIntent = new Intent("com.example.msn.UPLOADGALLERY");
 					startActivity(uploadIntent);
 				}
